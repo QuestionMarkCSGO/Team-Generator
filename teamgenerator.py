@@ -1,6 +1,14 @@
 import random
 import discord
 
+##############################
+#    Helper Functions
+##############################
+def randColor():
+    color_list = [discord.Color.red(), discord.Color.blue(), discord.Color.green()]
+    random.shuffle(color_list)
+    return color_list[0]
+
 class TeamGenerator:
 
     def __init__(self, msg, author):
@@ -27,8 +35,9 @@ class TeamGenerator:
 
     # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
     def update_embed(self, mode):
+        color = randColor()
         if mode == 'add' or 'rem':
-            emb = discord.Embed(title='Team Generator', description='Generate Random Teams', color=discord.Color.red())
+            emb = discord.Embed(title='Team Generator', description='Generate Random Teams', color=color)
             emb.add_field(name='React to this message', value='✅ to join\n🚀 to generate\n🎤 to move players in voice channel\n❌ to close the Team Generator')
             emb.add_field(name='Created by:', value=self.author)
             emb.add_field(name='Players joined:', value=self.players, inline=False)

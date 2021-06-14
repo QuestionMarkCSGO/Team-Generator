@@ -61,7 +61,8 @@ async def on_reaction_add(reaction, user):
 async def teams(ctx):
     debug('Teams command triggerd')
     # create embed
-    emb = discord.Embed(title='Team Generator', description='Generate Random Teams', color=discord.Color.red())
+    color = randColor()
+    emb = discord.Embed(title='Team Generator', description='Generate Random Teams', color=color)
     emb.add_field(name='React to this message', value='✅ to join\n🚀 to generate\n🎤 to move players in voice channel\n❌ to close the Team Generator')
     emb.add_field(name='Created by:', value=ctx.author)
     emb.add_field(name='Players joined:', value='none', inline=False)
