@@ -5,9 +5,7 @@ from discord.ext import commands
 # create bot
 bot = commands.Bot(command_prefix='.', description='Random Team Generator')
 
-# load teamgenerator Cog
-#print('loading TeamGenerator Cog...')
-#bot.load_extension('teamgenerator')
+
 
 ##############################
 #    Events
@@ -31,10 +29,31 @@ async def on_ready():
 ##############################
 @bot.command()
 async def teams(ctx):
-    e = dsicord.Embed(title='', description='', color=discord.Color.red())
-    msg = await ctx.send(embed=e)
+    players = []
+    emb = discord.Embed(title='Team Generator', description='Generate Random Teams', color=discord.Color.red())
+    emb.add_field(name='React to this message', value='✔️ to join\n❌ to leave')
+    msg = await ctx.send(embed=emb)
+    msgID = msg.id
 
+    def checkReaction(reaction, user):
+        return user != bot.user and msgID and (str(reaction.emoji) == '✔️' or str(reaction.emoji) == '🚀' or str(reaction.emoji) == '' or str(reaction.emoji) == '' or str(reaction.emoji) == '5️⃣')
 
+    reaction, user = await bot.wait_for('reaction_add', timeout=None, check=checkReaction)
+
+    if str(reaction.emoji) == '✔️':
+        print(user)
+
+    if str(reaction.emoji) == '❌':
+        pass
+
+    if str(reaction.emoji) == '🚀':
+        pass
+
+    if str(reaction.emoji) == '':
+        pass
+
+    if str(reaction.emoji) == '':
+        pass
 
 # get the token
 from get_token import *
