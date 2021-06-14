@@ -1,13 +1,12 @@
 import os
 import discord
 from discord.ext import commands
-from token import *
 
 # create bot
 bot = commands.Bot(command_prefix='.', description='Random Team Generator')
 
 # load teamgenerator Cog
-print('loading TeamGenerator Cog...')
+#print('loading TeamGenerator Cog...')
 #bot.load_extension('teamgenerator')
 
 ##############################
@@ -35,6 +34,7 @@ async def on_ready():
 
 
 # get the token
-token = TGTOKEN
+from get_token import *
+
 # run the bot
-bot.run(token)
+bot.run(tg_token)
