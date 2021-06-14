@@ -41,6 +41,7 @@ class TeamGenerator:
             emb.add_field(name='React to this message', value='✅ to join\n🚀 to generate\n🎤 to move players in voice channel\n❌ to close the Team Generator')
             emb.add_field(name='Created by:', value=self.author)
             emb.add_field(name='Players joined:', value=self.players, inline=False)
+            emb.set_thumbnail(url=self.players.len.avatar_url)
             self.msg.edit(embed=emb)
         if mode == gen:
             pass
