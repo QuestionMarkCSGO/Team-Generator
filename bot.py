@@ -64,8 +64,8 @@ async def teams(ctx):
     color = randColor()
     emb = discord.Embed(title='Team Generator', description='Generate Random Teams', color=color)
     emb.add_field(name='React to this message', value='✅ to join\n🚀 to generate\n🎤 to move players in voice channel\n❌ to close the Team Generator')
-    emb.add_field(name='Created by:', value=ctx.author)
     emb.add_field(name='Players joined:', value='none', inline=False)
+    emb.set_foother(name=ctx.author.name)
     # send embed and write it to msg (for msg id later on)
     msg = await ctx.send(embed=emb)
     # add reactions
