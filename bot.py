@@ -2,8 +2,6 @@ import os
 import discord
 from discord.ext import commands
 
-DEBUG = False
-VERSION = '1.0.0'
 # create bot
 bot = commands.Bot(command_prefix='.', description='Random Team Generator')
 
@@ -35,9 +33,10 @@ async def teams(ctx):
     emb = discord.Embed(title='Team Generator', description='Generate Random Teams', color=discord.Color.red())
     emb.add_field(name='React to this message', value='✔️ to join\n❌ to leave')
     msg = await ctx.send(embed=emb)
+    msgID = msg.id
 
     def checkReaction(reaction, user):
-        return user != bot.user and msg.id and (str(reaction.emoji) == '✔️' or str(reaction.emoji) == '🚀' or str(reaction.emoji) == '' or str(reaction.emoji) == '' or str(reaction.emoji) == '')
+        return user != bot.user and msgID and (str(reaction.emoji) == '✔️' or str(reaction.emoji) == '🚀' or str(reaction.emoji) == '' or str(reaction.emoji) == '' or str(reaction.emoji) == '5️⃣')
 
     reaction, user = await bot.wait_for('reaction_add', timeout=None, check=checkReaction)
 
