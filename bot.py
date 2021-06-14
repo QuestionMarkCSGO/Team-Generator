@@ -31,7 +31,7 @@ async def on_ready():
 ##############################
 @bot.command()
 async def teams(ctx):
-    e = dsicord.Embed(title='', description=, color=discord.Color.red())
+    e = dsicord.Embed(title='', description='', color=discord.Color.red())
     msg = await ctx.send(embed=e)
 
 
