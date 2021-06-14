@@ -27,25 +27,30 @@ tg_list = []
 @bot.event
 async def on_ready():
     print(f'Teamgenerator Version {VERSION}')
-    self_name = bot.user.name
     guildstr = ""
     for guild in bot.guilds:
         guildstr += str(guild) + ' ('+ str(guild.id) +')' + "\n"
         pass
-    print('We have logged in as '+self_name+' in:\n'+guildstr)
+    print('We have logged in as '+bot.user.name+' in:\n'+guildstr)
 
 
-# @bot.event
-# async def on_reaction_add(reaction, user):
-#     if reaction.message.id == msgID:
-#         if str(reaction.emoji) == '✅':
-#             pass
-#         if str(reaction.emoji) == '🚀':
-#             pass
-#         if str(reaction.emoji) == '🎤':
-#             pass
-#         if str(reaction.emoji) == '❌':
-#             pass
+@bot.event
+async def on_reaction_add(reaction, user):
+    id_dict = {}
+    for tg in tg_list:
+        id_dict[tg] = tg.msg.id
+    if reaction.message.id in id_dict:
+        if str(reaction.emoji) == '✅':
+            for tg in tg_list:
+                if tg.msg.id == reaction.message.id:
+                    tg.add_player(user)
+            print(user.name)
+        if str(reaction.emoji) == '🚀':
+            pass
+        if str(reaction.emoji) == '🎤':
+            pass
+        if str(reaction.emoji) == '❌':
+            pass
 
 
 ##############################
@@ -70,13 +75,11 @@ async def teams(ctx):
 
     # set shorter names
     msgID = msg.id
-    guildID = ctx.guild.id
     author = ctx.author
 
     # create TeamGeneratro instance and write it to tg_list
-    tg = TeamGenerator(msgID, author)
+    tg = TeamGenerator(msg, author)
     tg_list.append(tg)
-    print(tg_list[0].msgID)
 
 
 # get the token
