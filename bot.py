@@ -61,8 +61,11 @@ async def on_reaction_add(reaction, user):
                         await tg.gen_teams(user)
                         await tg.msg.add_reaction('↩️')
                         await tg.msg.add_reaction('🎤')
+                        await tg.msg.add_reaction('💬')
                         await tg.msg.clear_reaction('❌')
                         await tg.msg.clear_reaction('✅')
+                        await tg.msg.add_reaction('🔀')
+
                 if str(reaction.emoji) == '🎤': ## soll erst kommen wenn teams generiert wurden!! ##
                     await reaction.remove(user)
                 if str(reaction.emoji) == '↩️':
@@ -71,6 +74,20 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('✅')
                     await tg.msg.add_reaction('❌')
                     await tg.msg.add_reaction('🚀')
+                if str(reaction.emoji) == '💬':
+                    await tg.msg.clear_reactions()
+                    await tg.vote_map(user, value=None)
+                    await tg.msg.add_reaction('🌴')
+                    await tg.msg.add_reaction('🚉')
+                    await tg.msg.add_reaction('🔥')
+                    await tg.msg.add_reaction('☢️')
+                    await tg.msg.add_reaction('🕌')
+                    await tg.msg.add_reaction('🏙️')
+                    await tg.msg.add_reaction('🏭')
+                    await tg.msg.add_reaction('🌉')
+                    await tg.msg.add_reaction('🐦')
+                if str(reaction.emoji) == '🔀':
+                    pass
 
 
 
