@@ -56,7 +56,7 @@ async def on_reaction_add(reaction, user):
                     await reaction.remove(user)
                     # if less then two players joined display error
                     if len(tg.players) < 2:
-                        await self.update_embed('error', player)
+                        await tg.update_embed('error', player)
                     else:
                         await tg.gen_teams(user)
                         await tg.msg.add_reaction('↩️')
@@ -77,6 +77,28 @@ async def on_reaction_add(reaction, user):
 ##############################
 #    Commands
 ##############################
+
+@bot.command()
+@commands.has_permissions(manage_messages=True)
+async def clear(ctx, amount=00):
+    if DEBUG:
+        print('Clear command triggerd')
+    print(f'clearing {ctx.channel}')
+    if amount == 0:
+        await ctx.channel.purge()
+    else:
+        await ctx.channel.purge(limit=(int(amount + 1)))
+@clear.error
+async def clear_error(ctx, error):
+    if DEBUG:
+        print('Clear error triggerd: ' + str(error))
+    if isinstance(error, commands.MissingAnyRole):
+        print('clear: missing role')
+        return await ctx.send("```❌You don't have the permission!```")
+    elif isinstance(error, commands.MissingPermissions):
+        print('clear: missing permission')
+        return await ctx.send("```❌You don't have the permission!```")
+
 
 @bot.command()
 async def teams(ctx):
@@ -105,6 +127,15 @@ async def teams(ctx):
     # create TeamGenerator instance and write it to tg_list
     tg = TeamGenerator(bot, msg, author)
     tg_list.append(tg)
+
+@bot.command()
+async def close(ctx):
+    if ctx.author == tg.author:
+        pass
+    else:
+        e = discord.Embed(title='Only the creator can close the Team Generator!', color=discord.Color.random())
+        await ctx.send(embed=e, delete_after=5.0)
+
 
 @bot.command()
 async def mapvote(ctx):
