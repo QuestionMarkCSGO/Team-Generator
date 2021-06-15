@@ -48,29 +48,30 @@ async def on_reaction_add(reaction, user):
             if tg.msg.id == reaction.message.id:
                 if str(reaction.emoji) == '✅':
                     await tg.add_player(user)
-                if str(reaction.emoji) == '🚀':
-                    pass
-                if str(reaction.emoji) == '🎤':
-                    pass
+                    await reaction.remove(user)
                 if str(reaction.emoji) == '❌':
-                    pass
-
-
-@bot.event
-async def on_reaction_remove(reaction, user):
-    if user != bot.user:
-        debug('Reaction remove triggerd from ' + user.name)
-        id_dict = {}
-        for tg in tg_list:
-            id_dict[tg] = tg.msg.id
-        for tg in id_dict:
-            if tg.msg.id == reaction.message.id:
-                if str(reaction.emoji) == '✅':
                     await tg.rem_player(user)
+                    await reaction.remove(user)
+                if str(reaction.emoji) == '🚀':
+                    await reaction.remove(user)
+                    # if less then two players joined display error
+                    if len(tg.players) < 2:
+                        await self.update_embed('error', player)
+                    else:
+                        await tg.gen_teams(user)
+                        await tg.msg.add_reaction('↩️')
+                        await tg.msg.add_reaction('🎤')
+                        await tg.msg.clear_reaction('❌')
+                        await tg.msg.clear_reaction('✅')
+                if str(reaction.emoji) == '🎤': ## soll erst kommen wenn teams generiert wurden!! ##
+                    await reaction.remove(user)
+                if str(reaction.emoji) == '↩️':
+                    await tg.add_player(user)
+                    await tg.msg.clear_reactions()
+                    await tg.msg.add_reaction('✅')
+                    await tg.msg.add_reaction('❌')
+                    await tg.msg.add_reaction('🚀')
 
-
-def checkReaction(reaction, user):
-    return user != bot.user and (str(reaction.emoji) == '✅')
 
 
 ##############################
@@ -80,23 +81,23 @@ def checkReaction(reaction, user):
 @bot.command()
 async def teams(ctx):
     debug('Teams command triggerd')
+    await ctx.message.delete()
     # create embed
 
-    emb = discord.Embed(title='', description='Generate Random Teams', color=discord.Color.random())
-    emb.add_field(name='React to this message', value='✅  to join\n🚀  to generate\n🎤  to move players in voice channel\n❌  to close the Team Generator')
-    emb.add_field(name='__Players joined:__', value='```none```', inline=False)
+    emb = discord.Embed(title='', description='Generate Random Teams\n type .close to close  the TeamGenerator', color=discord.Color.random())
+    emb.add_field(name='Buttons:', value='✅ ---> join\n❌ ---> leave\n🚀 ---> generate')
+    emb.add_field(name='__Players joined:__', value='```      ```', inline=False)
     emb.set_author(name=bot.user.name, icon_url=str(bot.user.avatar_url))
 
-    emb.set_footer(text=f'created by {ctx.author.name}')
+    emb.set_footer(text=f'created by *{ctx.author.name}*')
     emb.set_thumbnail(url=bot.user.avatar_url)
 
     # send embed and write it to msg (for msg id later on)
     msg = await ctx.send(embed=emb)
     # add reactions
     await msg.add_reaction('✅')
-    await msg.add_reaction('🚀')
-    await msg.add_reaction('🎤')
     await msg.add_reaction('❌')
+    await msg.add_reaction('🚀')
 
     # set shorter names
     author = ctx.author
@@ -105,6 +106,10 @@ async def teams(ctx):
     tg = TeamGenerator(bot, msg, author)
     tg_list.append(tg)
 
+@bot.command()
+async def mapvote(ctx):
+    e = discord.Embed(title='', description='vote for maps')
+    e.add_field(nem='Mirage', value='---')
 
 
 # get the token
