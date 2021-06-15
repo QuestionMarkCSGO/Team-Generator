@@ -51,35 +51,36 @@ class TeamGenerator:
             if player in self.already_voted:
                 return
             else:
-                self.already_voted.append(player)
+                if value == 0:
+                    pass
                 if value == 1:
-                    self.votes[0] += 1
+                    self.votes[0].append(player.name)
                 elif value == 2:
-                    self.votes[1].append(player)
+                    self.votes[1].append(player.name)
                 elif value == 3:
-                    self.votes[2].append(player)
+                    self.votes[2].append(player.name)
                 elif value == 4:
-                    self.votes[3].append(player)
+                    self.votes[3].append(player.name)
                 elif value == 5:
-                    self.votes[4].append(player)
+                    self.votes[4].append(player.name)
                 elif value == 6:
-                    self.votes[5].append(player)
+                    self.votes[5].append(player.name)
                 elif value == 7:
-                    self.votes[6].append(player)
+                    self.votes[6].append(player.name)
                 elif value == 8:
-                    self.votes[7].append(player)
+                    self.votes[7].append(player.name)
                 elif value == 9:
-                    self.votes[8].append(player)
+                    self.votes[8].append(player.name)
 
-                print(f'{player} append ---> already_voted ---> voe: {value}')
+                print(f'{player} append ---> already_voted ---> vote: {value}')
                 await self.update_embed('vote', player, value)
 
     # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
     async def update_embed(self, mode, player, value=0):
-        playerstr = ''
-        for player in self.players:
-            playerstr += player.name + ', '
         if mode == 'add' or 'rem':
+            playerstr = ''
+            for player in self.players:
+                playerstr += player.name + ', '
             emb = discord.Embed(title='', description='Generate Random Teams\n type .close to close  the TeamGenerator', color=discord.Color.random())
             emb.add_field(name='Buttons:', value='✅ ---> join\n🚀 ---> generate\n❌ ---> leave')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
@@ -105,10 +106,12 @@ class TeamGenerator:
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
         if mode == 'vote':
+            votestr = ''
+            for player in self.already_voted:
+                votestr += player.name + ', '
             emb = discord.Embed(title='', description='Generate Random Teams\n type .close to close  the TeamGenerator', color=discord.Color.random())
-            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage ---> {self.votes[0]}\n🚉 ---> Train ---> {self.votes[1]}\n🔥 ---> Inferno ---> {self.votes[2]}\n☢️ ---> Nuke ---> {self.votes[3]}\n🕌 ---> Dust2 ---> {self.votes[4]}\n🏙️ ---> Vertigo ---> {self.votes[5]}\n🏭 Cache ---> {self.votes[6]}\n 🌉 ---> Overpass ---> {self.votes[7]}\n🐦 ---> Ancient ---> {self.votes[8]}```')
-            emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
-            emb.add_field(name='error', value='*At least 2 players need to join! ?join to join*')
+            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage ---> {self.votes[0]}\n🚉 ---> Train ---> {self.votes[1]}\n🔥 ---> Inferno ---> {self.votes[2]}\n☢️ ---> Nuke ---> {self.votes[3]}\n🕌 ---> Dust2 ---> {self.votes[4]}\n🏙️ ---> Vertigo ---> {self.votes[5]}\n🏭 Cache ---> {self.votes[6]}\n🌉 ---> Overpass ---> {self.votes[7]}\n🐦 ---> Ancient ---> {self.votes[8]}```')
+            emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)

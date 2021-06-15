@@ -76,7 +76,7 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('🚀')
                 if str(reaction.emoji) == '💬':
                     await tg.msg.clear_reactions()
-                    await tg.vote_map(user, value=None)
+                    await tg.vote_map(user, value=0)
                     await tg.msg.add_reaction('🌴')
                     await tg.msg.add_reaction('🚉')
                     await tg.msg.add_reaction('🔥')
@@ -88,6 +88,33 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('🐦')
                 if str(reaction.emoji) == '🔀':
                     pass
+                if str(reaction.emoji) == '🌴':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='1')
+                if str(reaction.emoji) == '🚉':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='2')
+                if str(reaction.emoji) == '🔥':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='3')
+                if str(reaction.emoji) == '☢️':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='4')
+                if str(reaction.emoji) == '🕌':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='5')
+                if str(reaction.emoji) == '🏙️':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='6')
+                if str(reaction.emoji) == '🏭':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='7')
+                if str(reaction.emoji) == '🌉':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='8')
+                if str(reaction.emoji) == '🐦':
+                    await reaction.remove(user)
+                    await tg.vote_map(user, value='')
 
 
 
