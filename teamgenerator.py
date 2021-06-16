@@ -82,7 +82,7 @@ class TeamGenerator:
             for player in self.players:
                 playerstr += player.name + ', '
             emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
-            emb.add_field(name='Buttons:', value='✅ ---> join\n🚀 ---> generate\n❌ ---> leave')
+            emb.add_field(name='Buttons:', value='✅ ---> join\n❌ ---> leave\n🚀 ---> generate')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
