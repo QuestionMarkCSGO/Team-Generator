@@ -11,7 +11,6 @@ class TeamGenerator:
         self.players = []       # list of players joined TeamGenerator
         self.teams = [[], []]
         self.already_voted = []
-        self.votes = [[],[],[],[],[],[],[],[],[]]
         self.mirage = 0
         self.train = 0
         self.inferno = 0
@@ -78,7 +77,7 @@ class TeamGenerator:
                 if map == 'ancient':
                     self.ancient += 1
                 self.already_voted.append(player)
-                print(f'{player} append ---> already_voted ---> vote: {map}')
+                print(f'{self.already_voted}')
                 await self.update_embed('vote', player)
 
     # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
@@ -115,7 +114,7 @@ class TeamGenerator:
             votestr = ''
             for player in self.already_voted:
                 playerstr += player.name + ', '
-            emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
+            emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator\nreact with ↩️ to go back', color=discord.Color.random())
             emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage   ---> {self.mirage}\n🚉 ---> Train    ---> {self.train}\n🔥 ---> Inferno  ---> {self.inferno}\n☢️ ---> Nuke     ---> {self.nuke}\n🕌 ---> Dust2    ---> {self.dust2}\n🏙️ ---> Vertigo  ---> {self.vertigo}\n🏭 ---> Cache    ---> {self.cache}\n🌉 ---> Overpass ---> {self.overpass}\n🐦 ---> Ancient  ---> {self.ancient}```')
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
