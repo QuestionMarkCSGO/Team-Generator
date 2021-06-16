@@ -66,7 +66,7 @@ async def on_reaction_add(reaction, user):
                     else:
                         await tg.gen_teams(user)
                         await tg.msg.add_reaction('↩️')
-                        await tg.msg.add_reaction('🎤')
+                        await tg.msg.add_reaction('🎙️')
                         await tg.msg.add_reaction('💬')
                         await tg.msg.clear_reaction('❌')
                         await tg.msg.clear_reaction('✅')
@@ -78,7 +78,7 @@ async def on_reaction_add(reaction, user):
                         await reaction.remove(user)
                         await tg.update_embed('error', user, errorstr='*only the creator can close the TeamGenerator!*')
 
-                if str(reaction.emoji) == '🎤':
+                if str(reaction.emoji) == '🎙️':
                     await reaction.remove(user)
                     await guild.create_category(name='TeamGenerator')
                     voice1 = await tg.author.guild.create_voice_channel(name='tgTeam 1',category='TeamGenerator')
@@ -92,6 +92,7 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('✅')
                     await tg.msg.add_reaction('❌')
                     await tg.msg.add_reaction('🚀')
+
                 if str(reaction.emoji) == '💬':
                     await tg.msg.clear_reactions()
                     await tg.update_embed('vote', user)
