@@ -110,7 +110,7 @@ class TeamGenerator:
             for player in self.already_voted:
                 votestr += player.name + ', '
             emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
-            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage ---> {self.votes[0]}\n🚉 ---> Train ---> {self.votes[1]}\n🔥 ---> Inferno ---> {self.votes[2]}\n☢️ ---> Nuke ---> {self.votes[3]}\n🕌 ---> Dust2 ---> {self.votes[4]}\n🏙️ ---> Vertigo ---> {self.votes[5]}\n🏭 Cache ---> {self.votes[6]}\n🌉 ---> Overpass ---> {self.votes[7]}\n🐦 ---> Ancient ---> {self.votes[8]}```')
+            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage   ---> □□□■■■■■■■\n🚉 ---> Train    ---> □□□■■■■■■■\n🔥 ---> Inferno  ---> □□□■■■■■■■\n☢️ ---> Nuke     ---> □□□■■■■■■■\n🕌 ---> Dust2    ---> □□□■■■■■■■\n🏙️ ---> Vertigo  ---> □□□■■■■■■■\n🏭 ---> Cache    ---> □□□■■■■■■■\n🌉 ---> Overpass ---> □□□■■■■■■■\n🐦 ---> Ancient  ---> □□□■■■■■■■```')
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
