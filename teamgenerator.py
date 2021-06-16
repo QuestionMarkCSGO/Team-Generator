@@ -58,6 +58,8 @@ class TeamGenerator:
             if player in self.already_voted:
                 return
             else:
+                self.already_voted.append(player)
+                await self.update_embed('vote', player)
                 if map == 'mirage':
                     self.mirage += 1
                 if map == 'train':
@@ -76,9 +78,6 @@ class TeamGenerator:
                     self.overpass += 1
                 if map == 'ancient':
                     self.ancient += 1
-                self.already_voted.append(player)
-                print(f'{self.already_voted}')
-                await self.update_embed('vote', player)
 
     # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
     async def update_embed(self, mode, player, errorstr=''):
@@ -113,8 +112,8 @@ class TeamGenerator:
         if mode == 'vote':
             votestr = ''
             for player in self.already_voted:
-                playerstr += player.name + ', '
-            emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator\nreact with ↩️ to go back', color=discord.Color.random())
+                votestr += player.name + ', '
+            emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator\nreact with 🛑 to cancle the voting and go back!', color=discord.Color.random())
             emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage   ---> {self.mirage}\n🚉 ---> Train    ---> {self.train}\n🔥 ---> Inferno  ---> {self.inferno}\n☢️ ---> Nuke     ---> {self.nuke}\n🕌 ---> Dust2    ---> {self.dust2}\n🏙️ ---> Vertigo  ---> {self.vertigo}\n🏭 ---> Cache    ---> {self.cache}\n🌉 ---> Overpass ---> {self.overpass}\n🐦 ---> Ancient  ---> {self.ancient}```')
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
@@ -124,7 +123,7 @@ class TeamGenerator:
         if mode == 'verror':
             votestr = ''
             for player in self.already_voted:
-                playerstr += player.name + ', '
+                votestr += player.name + ', '
             emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator\nreact with ↩️ to go back', color=discord.Color.random())
             emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage   ---> {self.mirage}\n🚉 ---> Train    ---> {self.train}\n🔥 ---> Inferno  ---> {self.inferno}\n☢️ ---> Nuke     ---> {self.nuke}\n🕌 ---> Dust2    ---> {self.dust2}\n🏙️ ---> Vertigo  ---> {self.vertigo}\n🏭 ---> Cache    ---> {self.cache}\n🌉 ---> Overpass ---> {self.overpass}\n🐦 ---> Ancient  ---> {self.ancient}```')
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)

@@ -53,11 +53,11 @@ async def on_reaction_add(reaction, user):
         for tg in id_dict:
             if tg.msg.id == reaction.message.id:
                 if str(reaction.emoji) == '✅':
+                    await reaction.remove(user)
                     await tg.add_player(user)
-                    await reaction.remove(user)
                 if str(reaction.emoji) == '❌':
-                    await tg.rem_player(user)
                     await reaction.remove(user)
+                    await tg.rem_player(user)
                 if str(reaction.emoji) == '🚀':
                     await reaction.remove(user)
                     # if less then two players joined display error
@@ -145,6 +145,7 @@ async def on_reaction_add(reaction, user):
                         await tg.msg.add_reaction('✅')
                         await tg.msg.add_reaction('❌')
                         await tg.msg.add_reaction('🚀')
+                        tg.already_voted = []
                     else:
                         await reaction.remove(user)
                         await tg.update_embed('verror', user, errorstr='*only the creator can cancle the voting and go back!*')
