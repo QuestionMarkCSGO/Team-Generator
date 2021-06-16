@@ -105,6 +105,7 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('🏭')
                     await tg.msg.add_reaction('🌉')
                     await tg.msg.add_reaction('🐦')
+                    await tg.msg.add_reaction('🛑')
                 if str(reaction.emoji) == '🔀':
                     await reaction.remove(user)
                     await tg.update_embed('rand', user)
@@ -136,7 +137,17 @@ async def on_reaction_add(reaction, user):
                 if str(reaction.emoji) == '🐦': # Ancient #
                     await reaction.remove(user)
                     await tg.vote_map(user, map='ancient')
-
+                if str(reaction.emoji) == '🛑':
+                    if user == tg.author:
+                        await tg.add_player(user)
+                        await reaction.remove(user)
+                        await tg.msg.clear_reactions()
+                        await tg.msg.add_reaction('✅')
+                        await tg.msg.add_reaction('❌')
+                        await tg.msg.add_reaction('🚀')
+                    else:
+                        await reaction.remove(user)
+                        await tg.update_embed('verror', user, errorstr='*only the creator can cancle the voting and go back!*')
 
 
 
@@ -175,7 +186,7 @@ async def teams(ctx):
     emb.add_field(name='__Players joined:__', value='```      ```', inline=False)
     emb.set_author(name=bot.user.name, icon_url=str(bot.user.avatar_url))
 
-    emb.set_footer(text=f'created by *{ctx.author.name}*')
+    emb.set_footer(text=f'created by {ctx.author.name}')
     emb.set_thumbnail(url=bot.user.avatar_url)
 
     # send embed and write it to msg (for msg id later on)
