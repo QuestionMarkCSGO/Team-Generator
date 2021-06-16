@@ -56,7 +56,7 @@ async def on_reaction_add(reaction, user):
                     await reaction.remove(user)
                     # if less then two players joined display error
                     if len(tg.players) < 2:
-                        await tg.update_embed('error', player)
+                        await tg.update_embed('error', user, errorstr='*At least 2 players need to join!*')
                     else:
                         await tg.gen_teams(user)
                         await tg.msg.add_reaction('↩️')
@@ -65,8 +65,14 @@ async def on_reaction_add(reaction, user):
                         await tg.msg.clear_reaction('❌')
                         await tg.msg.clear_reaction('✅')
                         await tg.msg.add_reaction('🔀')
+                if str(reaction.emoji) == '⛔': # close message #
+                    if user == tg.author:
+                        await tg.msg.delete()
+                    else:
+                        await reaction.remove(user)
+                        await tg.update_embed('error', user, errorstr='*only the creator can close the TeamGenerator!*')
 
-                if str(reaction.emoji) == '🎤': ## soll erst kommen wenn teams generiert wurden!! ##
+                if str(reaction.emoji) == '🎤':
                     await reaction.remove(user)
                 if str(reaction.emoji) == '↩️':
                     await tg.add_player(user)
@@ -87,34 +93,37 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('🌉')
                     await tg.msg.add_reaction('🐦')
                 if str(reaction.emoji) == '🔀':
-                    pass
-                if str(reaction.emoji) == '🌴':
+                    await reaction.remove(user)
+                    await tg.update_embed('rand', user)
+                    await tg.msg.clear_reaction('💬')
+                if str(reaction.emoji) == '🌴': # Mirage #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='1')
-                if str(reaction.emoji) == '🚉':
+                if str(reaction.emoji) == '🚉': # Train #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='2')
-                if str(reaction.emoji) == '🔥':
+                if str(reaction.emoji) == '🔥': # Inferno #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='3')
-                if str(reaction.emoji) == '☢️':
+                if str(reaction.emoji) == '☢️': # Nuke #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='4')
-                if str(reaction.emoji) == '🕌':
+                if str(reaction.emoji) == '🕌': # Dust2 #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='5')
-                if str(reaction.emoji) == '🏙️':
+                if str(reaction.emoji) == '🏙️': # Vertigo #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='6')
-                if str(reaction.emoji) == '🏭':
+                if str(reaction.emoji) == '🏭': # Cache #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='7')
-                if str(reaction.emoji) == '🌉':
+                if str(reaction.emoji) == '🌉': # Overpass #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='8')
-                if str(reaction.emoji) == '🐦':
+                if str(reaction.emoji) == '🐦': # Ancient #
                     await reaction.remove(user)
                     await tg.vote_map(user, value='')
+
 
 
 
@@ -125,9 +134,7 @@ async def on_reaction_add(reaction, user):
 @bot.command()
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount=00):
-    if DEBUG:
-        print('Clear command triggerd')
-    print(f'clearing {ctx.channel}')
+    debug(f'clearing {ctx.channel}')
     if amount == 0:
         await ctx.channel.purge()
     else:
@@ -150,7 +157,7 @@ async def teams(ctx):
     await ctx.message.delete()
     # create embed
 
-    emb = discord.Embed(title='', description='Generate Random Teams\n type .close to close  the TeamGenerator', color=discord.Color.random())
+    emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
     emb.add_field(name='Buttons:', value='✅ ---> join\n❌ ---> leave\n🚀 ---> generate')
     emb.add_field(name='__Players joined:__', value='```      ```', inline=False)
     emb.set_author(name=bot.user.name, icon_url=str(bot.user.avatar_url))
@@ -171,15 +178,6 @@ async def teams(ctx):
     # create TeamGenerator instance and write it to tg_list
     tg = TeamGenerator(bot, msg, author)
     tg_list.append(tg)
-
-@bot.command()
-async def close(ctx):
-    if ctx.author == tg.author:
-        pass
-    else:
-        e = discord.Embed(title='Only the creator can close the Team Generator!', color=discord.Color.random())
-        await ctx.send(embed=e, delete_after=5.0)
-
 
 @bot.command()
 async def mapvote(ctx):
