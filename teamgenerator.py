@@ -12,7 +12,15 @@ class TeamGenerator:
         self.teams = [[], []]
         self.already_voted = []
         self.votes = [[],[],[],[],[],[],[],[],[]]
-
+        self.mirage = 0
+        self.train = 0
+        self.inferno = 0
+        self.nuke = 0
+        self.dust2 = 0
+        self.vertigo = 0
+        self.cache = 0
+        self.overpass = 0
+        self.ancient = 0
     # add a player to the list
     async def add_player(self, player):
         if player in self.players:
@@ -46,37 +54,35 @@ class TeamGenerator:
                 print(f'team2: {self.teams[1]}')
         await self.update_embed('gen', self.teams)
     # map voting #
-    async def vote_map(self, player, value):
+    async def vote_map(self, player, map):
         if player in self.players:
             if player in self.already_voted:
                 return
             else:
-                if value == 0:
-                    pass
-                if value == 1:
-                    self.votes[0].append(player.name)
-                elif value == 2:
-                    self.votes[1].append(player.name)
-                elif value == 3:
-                    self.votes[2].append(player.name)
-                elif value == 4:
-                    self.votes[3].append(player.name)
-                elif value == 5:
-                    self.votes[4].append(player.name)
-                elif value == 6:
-                    self.votes[5].append(player.name)
-                elif value == 7:
-                    self.votes[6].append(player.name)
-                elif value == 8:
-                    self.votes[7].append(player.name)
-                elif value == 9:
-                    self.votes[8].append(player.name)
-
-                print(f'{player} append ---> already_voted ---> vote: {value}')
-                await self.update_embed('vote', player, value)
+                if map == 'mirage':
+                    self.mirage += 1
+                if map == 'train':
+                    self.train += 1
+                if map == 'inferno':
+                    self.inferno += 1
+                if map == 'nuke':
+                    self.nuke += 1
+                if map == 'dust2':
+                    self.dust2 += 1
+                if map == 'vertigo':
+                    self.vertigo += 1
+                if map == 'chache':
+                    self.cache += 1
+                if map == 'overpass':
+                    self.overpass += 1
+                if map == 'ancient':
+                    self.ancient += 1
+                self.already_voted.append(player)
+                print(f'{player} append ---> already_voted ---> vote: {map}')
+                await self.update_embed('vote', player)
 
     # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
-    async def update_embed(self, mode, player, errorstr='', value=0):
+    async def update_embed(self, mode, player, errorstr=''):
         if mode == 'add' or 'rem':
             playerstr = ''
             for player in self.players:
@@ -108,9 +114,9 @@ class TeamGenerator:
         if mode == 'vote':
             votestr = ''
             for player in self.already_voted:
-                votestr += player.name + ', '
+                playerstr += player.name + ', '
             emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
-            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage   ---> □□□■■■■■■■\n🚉 ---> Train    ---> □□□■■■■■■■\n🔥 ---> Inferno  ---> □□□■■■■■■■\n☢️ ---> Nuke     ---> □□□■■■■■■■\n🕌 ---> Dust2    ---> □□□■■■■■■■\n🏙️ ---> Vertigo  ---> □□□■■■■■■■\n🏭 ---> Cache    ---> □□□■■■■■■■\n🌉 ---> Overpass ---> □□□■■■■■■■\n🐦 ---> Ancient  ---> □□□■■■■■■■```')
+            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage   ---> {self.mirage}\n🚉 ---> Train    ---> {self.train}\n🔥 ---> Inferno  ---> {self.inferno}\n☢️ ---> Nuke     ---> {self.nuke}\n🕌 ---> Dust2    ---> {self.dust2}\n🏙️ ---> Vertigo  ---> {self.vertigo}\n🏭 ---> Cache    ---> {self.cache}\n🌉 ---> Overpass ---> {self.overpass}\n🐦 ---> Ancient  ---> {self.ancient}```')
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')

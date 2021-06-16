@@ -36,6 +36,12 @@ async def on_ready():
         pass
     print('We have logged in as '+bot.user.name+' in:\n'+guildstr)
 
+@bot.event
+async def on_guild_join(guild):
+    await guild.create_category(name='TeamGenerator')
+    await guild.create_text_channel(name='TeamGen',category='TeamGenerator')
+    await guild.create_voice_channel(name='tgTeam 1',category='TeamGenerator')
+    await guild.create_voice_channel(name='tgTeam 2',category='TeamGenerator')
 
 @bot.event
 async def on_reaction_add(reaction, user):
@@ -74,6 +80,12 @@ async def on_reaction_add(reaction, user):
 
                 if str(reaction.emoji) == '🎤':
                     await reaction.remove(user)
+                    await guild.create_category(name='TeamGenerator')
+                    voice1 = await tg.author.guild.create_voice_channel(name='tgTeam 1',category='TeamGenerator')
+                    voice2 = await tg.author.guild.create_voice_channel(name='tgTeam 2',category='TeamGenerator')
+                    channel1 = await tg.author.guild.get_channel(voice1.id)
+                    print(f'channel ID = {voice1}')
+                    await move_to(channel1)
                 if str(reaction.emoji) == '↩️':
                     await tg.add_player(user)
                     await tg.msg.clear_reactions()
@@ -82,7 +94,7 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('🚀')
                 if str(reaction.emoji) == '💬':
                     await tg.msg.clear_reactions()
-                    await tg.vote_map(user, value=0)
+                    await tg.update_embed('vote', user)
                     await tg.msg.add_reaction('🌴')
                     await tg.msg.add_reaction('🚉')
                     await tg.msg.add_reaction('🔥')
@@ -98,31 +110,31 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.clear_reaction('💬')
                 if str(reaction.emoji) == '🌴': # Mirage #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='1')
+                    await tg.vote_map(user, map='mirage')
                 if str(reaction.emoji) == '🚉': # Train #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='2')
+                    await tg.vote_map(user, map='train')
                 if str(reaction.emoji) == '🔥': # Inferno #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='3')
+                    await tg.vote_map(user, map='inferno')
                 if str(reaction.emoji) == '☢️': # Nuke #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='4')
+                    await tg.vote_map(user, map='nuke')
                 if str(reaction.emoji) == '🕌': # Dust2 #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='5')
+                    await tg.vote_map(user, map='dust2')
                 if str(reaction.emoji) == '🏙️': # Vertigo #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='6')
+                    await tg.vote_map(user, map='vertigo')
                 if str(reaction.emoji) == '🏭': # Cache #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='7')
+                    await tg.vote_map(user, map='cache')
                 if str(reaction.emoji) == '🌉': # Overpass #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='8')
+                    await tg.vote_map(user, map='overpass')
                 if str(reaction.emoji) == '🐦': # Ancient #
                     await reaction.remove(user)
-                    await tg.vote_map(user, value='')
+                    await tg.vote_map(user, map='ancient')
 
 
 
