@@ -153,6 +153,15 @@ async def on_reaction_add(reaction, user):
                         await tg.msg.add_reaction('❌')
                         await tg.msg.add_reaction('🚀')
                         tg.already_voted = []
+                        tg.mirage = 0
+                        tg.train = 0
+                        tg.inferno = 0
+                        tg.nuke = 0
+                        tg.dust2 = 0
+                        tg.vertigo = 0
+                        tg.cache
+                        tg.overpass = 0
+                        tg.ancient = 0
                     else:
                         await reaction.remove(user)
                         await tg.update_embed('verror', user, errorstr='*only the creator can cancle the voting and go back!*')
