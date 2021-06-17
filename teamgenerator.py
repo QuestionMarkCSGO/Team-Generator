@@ -62,7 +62,6 @@ class TeamGenerator:
             else:
                 print(f'{player.name} voted for {map}')
                 self.already_voted.append(player)
-                await self.update_embed('vote', player)
                 if map == 'mirage':
                     self.mirage += 1
                 elif map == 'train':
@@ -83,6 +82,8 @@ class TeamGenerator:
                     self.ancient += 1
                 else:
                     print(f'Map not known! map: {map}')
+                    return
+                await self.update_embed('vote', player)
 
     # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
     async def update_embed(self, mode, player, errorstr=''):
