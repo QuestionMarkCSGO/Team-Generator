@@ -85,9 +85,36 @@ class TeamGenerator:
                     return
                 await self.update_embed('vote', player)
 
+    async def convert_vote(self, votes):
+        if votes == 0:
+            return '| |'
+        if votes == 1:
+            return '|▉|'
+        if votes == 2:
+            return '|▉▉|'
+        if votes == 3:
+            return '|▉▉▉|'
+        if votes == 4:
+            return '|▉▉▉▉|'
+        if votes == 5:
+            return '|▉▉▉▉▉|'
+        if votes == 6:
+            return '|▉▉▉▉▉▉|'
+        if votes == 7:
+            return '|▉▉▉▉▉▉▉|'
+        if votes == 8:
+            return '|▉▉▉▉▉▉▉▉|'
+        if votes == 9:
+            return '|▉▉▉▉▉▉▉▉▉|'
+        if votes == 10:
+            return '|▉▉▉▉▉▉▉▉▉▉|'
+
+
+
+
     # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
     async def update_embed(self, mode, player, errorstr=''):
-        print(f'update embed.. {mode}')
+
         if mode == 'add' or 'rem':
             playerstr = ''
             for player in self.players:
@@ -108,7 +135,6 @@ class TeamGenerator:
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
         if mode == 'error':
-            print(f'update_embed mode "error" {errorstr}')
             emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
             emb.add_field(name='Butons:', value='✅ ---> join\n❌ ---> leave\n🚀 ---> generate')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
@@ -117,12 +143,25 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
+        if mode == 'vote' or 'verror':
+            mirage_str = await self.convert_vote(self.mirage)
+            train_str = await self.convert_vote(self.train)
+            inferno_str = await self.convert_vote(self.inferno)
+            nuke_str = await self.convert_vote(self.nuke)
+            dust2_str = await self.convert_vote(self.dust2)
+            vertigo_str = await self.convert_vote(self.vertigo)
+            cache_str = await self.convert_vote(self.cache)
+            overpass_str = await self.convert_vote(self.overpass)
+            ancient_str = await self.convert_vote(self.ancient)
         if mode == 'vote':
             votestr = ''
             for player in self.already_voted:
                 votestr += player.name + ', '
+            # convert number of votes to [▉▉▉▉▉▉▉▉] str #
+
+            # update embed with converted str #
             emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator\nreact with 🛑 to cancle the voting and go back!', color=discord.Color.random())
-            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage   ---> {self.mirage}\n🚉 ---> Train    ---> {self.train}\n🔥 ---> Inferno  ---> {self.inferno}\n☢️ ---> Nuke     ---> {self.nuke}\n🕌 ---> Dust2    ---> {self.dust2}\n🏙️ ---> Vertigo  ---> {self.vertigo}\n🏭 ---> Cache    ---> {self.cache}\n🌉 ---> Overpass ---> {self.overpass}\n🐦 ---> Ancient  ---> {self.ancient}```')
+            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage: {mirage_str}\n🚉 ---> Train: {train_str}\n🔥 ---> Inferno  ---> {inferno_str}\n☢️ ---> Nuke     ---> {nuke_str}\n🕌 ---> Dust2    ---> {dust2_str}\n🏙️ ---> Vertigo  ---> {vertigo_str}\n🏭 ---> Cache    ---> {cache_str}\n🌉 ---> Overpass ---> {overpass_str}\n🐦 ---> Ancient  ---> {ancient_str}```')
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
@@ -133,7 +172,7 @@ class TeamGenerator:
             for player in self.already_voted:
                 votestr += player.name + ', '
             emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator\nreact with ↩️ to go back', color=discord.Color.random())
-            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage   ---> {self.mirage}\n🚉 ---> Train    ---> {self.train}\n🔥 ---> Inferno  ---> {self.inferno}\n☢️ ---> Nuke     ---> {self.nuke}\n🕌 ---> Dust2    ---> {self.dust2}\n🏙️ ---> Vertigo  ---> {self.vertigo}\n🏭 ---> Cache    ---> {self.cache}\n🌉 ---> Overpass ---> {self.overpass}\n🐦 ---> Ancient  ---> {self.ancient}```')
+            emb.add_field(name='Butons:', value=f'```🌴 ---> Mirage: {self.mirage}\n🚉 ---> Train: {self.train}\n🔥 ---> Inferno: {self.inferno}\n☢️ ---> Nuke: {self.nuke}\n🕌 ---> Dust2: {self.dust2}\n🏙️ ---> Vertigo: {self.vertigo}\n🏭 ---> Cache: {self.cache}\n🌉 ---> Overpass: {self.overpass}\n🐦 ---> Ancient: {self.ancient}```')
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
             emb.add_field(name=f'error @{player.name} ', value=errorstr)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
