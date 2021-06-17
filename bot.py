@@ -72,8 +72,16 @@ async def on_reaction_add(reaction, user):
                         await tg.msg.clear_reaction('✅')
                         await tg.msg.add_reaction('🔀')
                 if str(reaction.emoji) == '⛔': # close message #
+                    # check if the author reacted. only then delete tg!
                     if user == tg.author:
+                        # delete tg message
                         await tg.msg.delete()
+                        for mytg in tg_list:
+                            if mytg == tg:
+                                # delete tg from tg_list
+                                tg_list.remove(mytg)
+                        # delete tg instance
+                        del tg
                     else:
                         await reaction.remove(user)
                         await tg.update_embed('error', user, errorstr='*only the creator can close the TeamGenerator!*')

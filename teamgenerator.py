@@ -54,30 +54,35 @@ class TeamGenerator:
         await self.update_embed('gen', self.teams)
     # map voting #
     async def vote_map(self, player, map):
+        # check if player is in player list
         if player in self.players:
+            # check if player has already voted
             if player in self.already_voted:
                 return
             else:
+                print(f'{player.name} voted for {map}')
                 self.already_voted.append(player)
                 await self.update_embed('vote', player)
                 if map == 'mirage':
                     self.mirage += 1
-                if map == 'train':
+                elif map == 'train':
                     self.train += 1
-                if map == 'inferno':
+                elif map == 'inferno':
                     self.inferno += 1
-                if map == 'nuke':
+                elif map == 'nuke':
                     self.nuke += 1
-                if map == 'dust2':
+                elif map == 'dust2':
                     self.dust2 += 1
-                if map == 'vertigo':
+                elif map == 'vertigo':
                     self.vertigo += 1
-                if map == 'chache':
+                elif map == 'chache':
                     self.cache += 1
-                if map == 'overpass':
+                elif map == 'overpass':
                     self.overpass += 1
-                if map == 'ancient':
+                elif map == 'ancient':
                     self.ancient += 1
+                else:
+                    print(f'Map not known! map: {map}')
 
     # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
     async def update_embed(self, mode, player, errorstr=''):
@@ -92,7 +97,7 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
-        if mode == 'gen':
+        elif mode == 'gen':
             emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
             emb.add_field(name='Buttons:', value='🚀 ---> generate Teams again\n🎙️ ---> move players in voice channel\n↩️ ---> add more players\n💬 ---> Vote for Map\n🔀 ---> Choose random Map')
             emb.add_field(name='Players joined:', value=f'``` Team 1: {self.teams[0]}\n Team 2: {self.teams[1]}```', inline=False)
@@ -100,7 +105,7 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
-        if mode == 'error':
+        elif mode == 'error':
             emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
             emb.add_field(name='Butons:', value='✅ ---> join\n❌ ---> leave\n🚀 ---> generate')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
@@ -109,7 +114,7 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
-        if mode == 'vote':
+        elif mode == 'vote':
             votestr = ''
             for player in self.already_voted:
                 votestr += player.name + ', '
@@ -120,7 +125,7 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
-        if mode == 'verror':
+        elif mode == 'verror':
             votestr = ''
             for player in self.already_voted:
                 votestr += player.name + ', '
@@ -132,7 +137,7 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
-        if mode == 'rand': # random Map #
+        elif mode == 'rand': # random Map #
             maps = ['Mirage', 'Train', 'Inferno', 'Nuke', 'Dust2', 'Vertigo', 'Cache', 'Overpass', 'Ancient']
             rand = random.choice(maps)
             emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
@@ -143,4 +148,8 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
-        return emb
+        else:
+            print(f'Error: update_embed mode is not known! mode: {mode}')
+
+    async def remove_tg(self):
+        pass
