@@ -62,7 +62,8 @@ async def on_reaction_add(reaction, user):
                     await reaction.remove(user)
                     # if less then two players joined display error
                     if len(tg.players) < 2:
-                        await tg.update_embed('error', user, errorstr='*At least 2 players need to join!*')
+                        print('At least 2 player need to join!')
+                        await tg.update_embed('error', user, '*At least 2 players need to join!*')
                     else:
                         await tg.gen_teams(user)
                         await tg.msg.add_reaction('↩️')
