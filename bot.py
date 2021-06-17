@@ -86,7 +86,6 @@ async def on_reaction_add(reaction, user):
                     else:
                         await reaction.remove(user)
                         await tg.update_embed('error', user, errorstr='*only the creator can close the TeamGenerator!*')
-
                 if str(reaction.emoji) == '🎙️':
                     await reaction.remove(user)
                     await guild.create_category(name='TeamGenerator')
@@ -101,7 +100,6 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('✅')
                     await tg.msg.add_reaction('❌')
                     await tg.msg.add_reaction('🚀')
-
                 if str(reaction.emoji) == '💬':
                     await tg.msg.clear_reactions()
                     await tg.update_embed('vote', user)
