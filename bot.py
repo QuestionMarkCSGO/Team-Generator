@@ -202,8 +202,8 @@ async def teams(ctx):
     await ctx.message.delete()
     # create embed
 
-    emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
-    emb.add_field(name='Buttons:', value='✅ ---> join\n❌ ---> leave\n🚀 ---> generate')
+    emb = discord.Embed(title='', description='**__Generate Random Teams__**\n```react with ⛔ to close  the TeamGenerator```', color=discord.Color.red())
+    emb.add_field(name='__Buttons:__', value='```✅ 🢂 join```\n```❌ 🢂 leave```\n```🚀 🢂 generate```')
     emb.add_field(name='__Players joined:__', value='```      ```', inline=False)
     emb.set_author(name=bot.user.name, icon_url=str(bot.user.avatar_url))
 
@@ -229,7 +229,9 @@ async def mapvote(ctx):
     e = discord.Embed(title='', description='vote for maps')
     e.add_field(nem='Mirage', value='---')
 
-
+@bot.command()
+async def emb(ctx):
+    await tg.gen_end_screen('Smokr, iwanowi', 'pablit0, Ralf Rüdiger')
 # get the token
 from get_token import *
 
