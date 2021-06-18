@@ -203,7 +203,7 @@ async def teams(ctx):
     # create embed
 
     emb = discord.Embed(title='', description='**__Generate Random Teams__**\n```react with ⛔ to close  the TeamGenerator```', color=discord.Color.red())
-    emb.add_field(name='__Buttons:__', value='```✅ 🢂 join```\n```❌ 🢂 leave```\n```🚀 🢂 generate```')
+    emb.add_field(name='__Buttons:__', value='```✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate```')
     emb.add_field(name='__Players joined:__', value='```      ```', inline=False)
     emb.set_author(name=bot.user.name, icon_url=str(bot.user.avatar_url))
 

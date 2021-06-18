@@ -125,7 +125,7 @@ class TeamGenerator:
             playerstr = ''
             for player in self.players:
                 playerstr += player.name + ', '
-            emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
+            emb = discord.Embed(title='', description='**__Generate Random Teams__**\n```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
             emb.add_field(name='Buttons:', value='```✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate```')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
@@ -198,10 +198,10 @@ class TeamGenerator:
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
         if mode == 'endscreen':
-            file = discord.File('background.png')
+            file = discord.File('endscreen.png')
             emb = discord.Embed(title='', description='', color=discord.Color.gold())
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
-            emb.set_image(url="attachment://background.png")
+            emb.set_image(url="attachment://endscreen.png")
             channel = self.msg.channel
             await self.msg.delete()
             self.msg = await channel.send(embed=emb, file=file, delete_after=200)
@@ -209,10 +209,10 @@ class TeamGenerator:
 
 
     async def gen_end_screen(self):
-        img = cv.imread('background.png')
+        img = cv.imread('endscreen.png')
         text_team1 = f'{self.team1_str}'
         text_team2 = f'{self.team2_str}'
-        cv.putText(îmg, text, (380,30), cv.FONT_HERSHEY_TRIPLEX, 1.0, (133,133,250), 2)
-        cv.putText(îmg, text, (280,20), cv.FONT_HERSHEY_TRIPLEX, 1.0, (133,133,250), 2)
+        cv.putText(img, text_team1, (280,20), cv.FONT_HERSHEY_TRIPLEX, 1.0, (133,133,250), 2)
+        cv.putText(img, text_team2, (380,30), cv.FONT_HERSHEY_TRIPLEX, 1.0, (133,133,250), 2)
         cv.imwrite('endscreen.png', img)
         cv.imshow('endscreen', img)
