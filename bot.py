@@ -146,12 +146,16 @@ async def on_reaction_add(reaction, user):
                     await tg.vote_map(user, map='ancient')
                 if str(reaction.emoji) == '🛑':
                     if user == tg.author:
-                        await tg.add_player(user)
+                        await tg.update_embed('gen', user)
                         await reaction.remove(user)
                         await tg.msg.clear_reactions()
-                        await tg.msg.add_reaction('✅')
-                        await tg.msg.add_reaction('❌')
-                        await tg.msg.add_reaction('🚀')
+                        await tg.gen_teams(user)
+                        await tg.msg.add_reaction('↩️')
+                        await tg.msg.add_reaction('🎙️')
+                        await tg.msg.add_reaction('💬')
+                        await tg.msg.clear_reaction('❌')
+                        await tg.msg.clear_reaction('✅')
+                        await tg.msg.add_reaction('🔀')
                         tg.already_voted = []
                         tg.mirage = 0
                         tg.train = 0
