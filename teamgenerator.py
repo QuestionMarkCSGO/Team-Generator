@@ -3,6 +3,7 @@ import discord
 import random
 import cv2 as cv                # import OpenCV
 import os
+import operator
 
 class TeamGenerator:
 
@@ -15,18 +16,21 @@ class TeamGenerator:
         self.team1_str = ''
         self.team2_str = ''
         self.already_voted = []
-        self.mirage = 0
-        self.train = 0
-        self.inferno = 0
-        self.nuke = 0
-        self.dust2 = 0
-        self.vertigo = 0
-        self.cache = 0
-        self.overpass = 0
-        self.ancient = 0
+
         self.team1 = []
         self.team2 = []
         self.img = None
+        self.maps = {
+            'train': 0,
+            'inferno': 0,
+            'nuke': 0,
+            'mirage': 0,
+            'dust2': 0,
+            'vertigo': 0,
+            'cache': 0,
+            'overpass': 0,
+            'ancient': 0
+        }
     # add a player to the list
     async def add_player(self, player):
         if player in self.players:
@@ -67,48 +71,38 @@ class TeamGenerator:
                 print(f'{player.name} voted for {map}')
                 self.already_voted.append(player)
                 if map == 'mirage':
-                    self.mirage += 1
+                    self.maps['mirage'] += 1
                 elif map == 'train':
-                    self.train += 1
+                    self.maps['train'] += 1
                 elif map == 'inferno':
-                    self.inferno += 1
+                    self.maps['inferno'] += 1
                 elif map == 'nuke':
-                    self.nuke += 1
+                    self.maps['nuke'] += 1
                 elif map == 'dust2':
-                    self.dust2 += 1
+                    self.maps['dust2'] += 1
                 elif map == 'vertigo':
-                    self.vertigo += 1
+                    self.maps['vertigo'] += 1
                 elif map == 'chache':
-                    self.cache += 1
+                    self.maps['cache'] += 1
                 elif map == 'overpass':
-                    self.overpass += 1
+                    self.maps['overpass'] += 1
                 elif map == 'ancient':
-                    self.ancient += 1
+                    self.maps['ancient'] += 1
                 else:
                     print(f'Map not known! map: {map}')
                     return
                 await self.update_embed('vote', player)
                 if len(self.players) == len(self.already_voted):
-                    if self.mirage > self.train and self.inferno and self.dust2 and self.nuke and self.vertigo and self.cache and self.overpass and self.ancient:
-                        map = 'mirage'
-                    if self.train > self. mirage and self. inferno and self.dust2 and self.nuke and self.vertigo and self.cache and self.overpass and self.ancient:
-                        map = 'train'
-                    if self.inferno > self.mirage and self.train and self.dust2 and self.vertigo and self.cache and self.overpass and self.ancient and self.nuke:
-                        map = 'inferno'
-                    if self.nuke > self.mirage and self.inferno and self.train and self.dust2 and self.vertigo and self.cache and self.overpass and self.ancient:
-                        map = 'nuke'
-                    if self.dust2 > self.mirage and self.inferno and self.train and self.nuke and self.vertigo and self.cache and self.overpass and self.ancient:
-                        map = 'dust2'
-                    if self.vertigo > self.mirage and self.inferno and self.dust2 and self.train and self.nuke and self. cache and self.overpass and self.ancient:
-                        map = 'vertigo'
-                    if self.cache > self.mirage and self.vertigo and self.inferno and self.dust2 and self.nuke and self.overpass and self.ancient and self.train:
-                        map = 'cache'
-                    if self.overpass > self.mirage and self.cache and self.vertigo and self.inferno and self.dust2 and self.nuke and self.overpass and self.ancient:
-                        map = 'overpass'
-                    if self.ancient > self.mirage and self.cache and self.vertigo and self.inferno and sekf.cache and self.nuke and self.overpass and self.train:
-                        map = 'ancient'
-                    print(f'map: {map}')
-                    await self.get_endscreen_img(map)
+                    top_map = max(self.maps, key=lambda key: self.maps[key])
+                    top_map_list = []
+                    for map in self.maps:
+                        if self.maps[map] == self.maps[top_map]:
+                            top_map_list.append(map)
+                            print(map)
+                    print(top_map_list)
+                    top_map = random.choice(top_map_list)
+                    print(f'map: {top_map}')
+                    await self.get_endscreen_img(top_map)
 
 
 
@@ -179,21 +173,29 @@ class TeamGenerator:
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
         if mode == 'vote' or 'verror':
-            mirage_str = await self.convert_vote(self.mirage)
-            train_str = await self.convert_vote(self.train)
-            inferno_str = await self.convert_vote(self.inferno)
-            nuke_str = await self.convert_vote(self.nuke)
-            dust2_str = await self.convert_vote(self.dust2)
-            vertigo_str = await self.convert_vote(self.vertigo)
-            cache_str = await self.convert_vote(self.cache)
-            overpass_str = await self.convert_vote(self.overpass)
-            ancient_str = await self.convert_vote(self.ancient)
+            mirage_str = await self.convert_vote(self.maps['mirage'])
+            train_str = await self.convert_vote(self.maps['train'])
+            inferno_str = await self.convert_vote(self.maps['inferno'])
+            nuke_str = await self.convert_vote(self.maps['nuke'])
+            dust2_str = await self.convert_vote(self.maps['dust2'])
+            vertigo_str = await self.convert_vote(self.maps['vertigo'])
+            cache_str = await self.convert_vote(self.maps['cache'])
+            overpass_str = await self.convert_vote(self.maps['overpass'])
+            ancient_str = await self.convert_vote(self.maps['ancient'])
         if mode == 'vote':
             votestr = ''
             for player in self.already_voted:
                 votestr += player.name + ', '
-            emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator\nreact with 🛑 to cancle the voting and go back!', color=discord.Color.random())
-            emb.add_field(name='Butons:', value=f'```🌴 🢂 Mirage: {mirage_str}\n\n🚉 🢂 Train: {train_str}\n\n🔥 🢂 Inferno: {inferno_str}\n\n☢️ 🢂 Nuke: {nuke_str}\n\n🕌 🢂 Dust2: {dust2_str}\n\n🏙️ 🢂 Vertigo: {vertigo_str}\n\n🏭 🢂 Cache: {cache_str}\n\n🌉 🢂 Overpass: {overpass_str}\n\n🐦 🢂 Ancient: {ancient_str}```')
+            emb = discord.Embed(title='', description='**__Vote for Map__**\n```react with ⛔ to close  the TeamGenerator\n\nreact with 🛑 to cancle the voting and go back!```', color=discord.Color.random())
+            emb.add_field(name='🌴 🢂 mirage', value=mirage_str)
+            emb.add_field(name='🚉 🢂 Train', value=train_str)
+            emb.add_field(name='🔥 🢂 Inferno', value=inferno_str)
+            emb.add_field(name='☢️ 🢂 Nuke', value=nuke_str)
+            emb.add_field(name='🕌 🢂 Dust2:', value=dust2_str)
+            emb.add_field(name='🏙️ 🢂 Vertigo', value=vertigo_str)
+            emb.add_field(name='🏭 🢂 Cache', value=cache_str)
+            emb.add_field(name='🌉 🢂 Overpass', value=overpass_str)
+            emb.add_field(name='🐦 🢂 Ancient', value=ancient_str)
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
@@ -203,10 +205,17 @@ class TeamGenerator:
             votestr = ''
             for player in self.already_voted:
                 votestr += player.name + ', '
-            emb = discord.Embed(title='', description='**__Vote for Map__**\nreact with ⛔ to close  the TeamGenerator\nreact with ↩️ to go back', color=discord.Color.random())
-            emb.add_field(name='Butons:', value=f'```🌴 🢂 Mirage: {mirage_str}\n\n🚉 🢂 Train: {train_str}\n\n🔥 🢂 Inferno: {inferno_str}\n\n☢️ 🢂 Nuke: {nuke_str}\n\n🕌 🢂 Dust2: {dust2_str}\n\n🏙️ 🢂 Vertigo: {vertigo_str}\n\n🏭 🢂 Cache: {cache_str}\n\n🌉 🢂 Overpass: {overpass_str}\n\n🐦 🢂 Ancient: {ancient_str}```')
+            emb = discord.Embed(title='', description='**__Vote for Map__**\n```react with ⛔ to close  the TeamGenerator\n\nreact with 🛑 to cancle the voting and go back!```', color=discord.Color.random())
+            emb.add_field(name='🌴 🢂 mirage', value=mirage_str)
+            emb.add_field(name='🚉 🢂 Train', value=train_str)
+            emb.add_field(name='🔥 🢂 Inferno', value=inferno_str)
+            emb.add_field(name='☢️ 🢂 Nuke', value=nuke_str)
+            emb.add_field(name='🕌 🢂 Dust2:', value=dust2_str)
+            emb.add_field(name='🏙️ 🢂 Vertigo', value=vertigo_str)
+            emb.add_field(name='🏭 🢂 Cache', value=cache_str)
+            emb.add_field(name='🌉 🢂 Overpass', value=overpass_str)
+            emb.add_field(name='🐦 🢂 Ancient', value=ancient_str)
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
-            emb.add_field(name=f'error @{player.name} ', value=errorstr)
             emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
@@ -356,154 +365,154 @@ class TeamGenerator:
         pos11 = (500,500)
         pos12 = (500,550)
         if lan == 2:
-            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
             cv.imwrite(f'{self.msg.id}.png', self.img)
             print(f'{self.msg.id}.png')
 
         if lan == 3:
-            if len(team1) == 2:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            if len(self.team1) == 2:
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
             else:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
         if lan == 4:
-            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
             cv.imwrite(f'{self.msg.id}.png', self.img)
         if lan == 5:
-            if len(team1) == 3:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            if len(self.team1) == 3:
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
             else:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
         if lan == 6:
-            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
             cv.imwrite(f'{self.msg.id}.png', self.img)
         if lan == 7:
-            if len(team1) == 4:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            if len(self.team1) == 4:
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
             else:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
         if lan == 8:
-            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
             cv.imwrite(f'{self.msg.id}.png', img)
         if lan == 9:
-            if len(team1) == 5:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            if len(self.team1) == 5:
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
             else:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
         if lan == 10:
-            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
             cv.imwrite(f'{self.msg.id}.png', self.img)
         if lan == 11:
-            if len(team1) == 6:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[5]}', pos6, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            if len(self.team1) == 6:
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[5]}', pos6, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
             else:
-                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-                cv.putText(self.img, f'{self.team2[5]}', pos12, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+                cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+                cv.putText(self.img, f'{self.team2[5]}', pos12, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
                 cv.imwrite(f'{self.msg.id}.png', self.img)
         if lan == 12:
-            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team1[5]}', pos6, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
-            cv.putText(self.img, f'{self.team2[5]}', pos12, cv.FONT_HERSHEY_DUPLEX, 1.0, (133,133,250), 1)
+            cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[1]}', pos2, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[2]}', pos3, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[3]}', pos4, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[4]}', pos5, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team1[5]}', pos6, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[1]}', pos8, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[2]}', pos9, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[3]}', pos10, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[4]}', pos11, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
+            cv.putText(self.img, f'{self.team2[5]}', pos12, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
             cv.imwrite(f'{self.msg.id}.png', self.img)
         await self.update_embed('endscreen')
