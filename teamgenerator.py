@@ -40,11 +40,10 @@ class TeamGenerator:
     # remove player from list
     async def rem_player(self, player):
         if player in self.players:
-            print(f'removed {player}!')
             self.players.remove(player)
             await self.update_embed('rem', player)
         else:
-            print(f'{player} not in players list')
+            return
     # generate random teams #
     async def gen_teams(self, player):
         self.teams = [[], []]
@@ -54,10 +53,8 @@ class TeamGenerator:
             i = i + 1
             if (i % 2) == 0:
                 self.teams[0].append(player)
-                print(f'team1: {self.teams[0]}')
             else:
                 self.teams[1].append(player)
-                print(f'team2: {self.teams[1]}')
         await self.update_embed('gen', self.teams)
     # map voting #
     async def vote_map(self, player, map):
@@ -159,6 +156,8 @@ class TeamGenerator:
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
         if mode == 'gen':
+            self.team1_str = ''
+            self.team2_str = ''
             for player in self.teams[0]:
                 self.team1_str += player.name + ', '
             for player in self.teams[1]:
