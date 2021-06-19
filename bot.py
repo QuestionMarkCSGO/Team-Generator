@@ -115,8 +115,10 @@ async def on_reaction_add(reaction, user):
                     await tg.msg.add_reaction('🛑')
                 if str(reaction.emoji) == '🔀':
                     await reaction.remove(user)
-                    await tg.update_embed('rand', user)
                     await tg.msg.clear_reaction('💬')
+                    maps = ['mirage', 'train', 'inferno', 'nuke', 'dust2', 'vertigo', 'cache', 'overpass', 'ancient']
+                    rand = random.choice(maps)
+                    await tg.get_endscreen_img(rand)
                 if str(reaction.emoji) == '🌴': # Mirage #
                     await reaction.remove(user)
                     await tg.vote_map(user, map='mirage')

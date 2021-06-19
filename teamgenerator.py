@@ -107,7 +107,7 @@ class TeamGenerator:
 
 
 
-    async def convert_vote(self, votes):
+    async def convert_vote(self, votes): # converts votes int in 'bar string'
         if votes == 0:
             return '| '
         if votes == 1:
@@ -131,12 +131,12 @@ class TeamGenerator:
         if votes == 10:
             return '|▉▉▉▉▉▉▉▉▉▉'
 
-    async def del_img(self):
+    async def del_img(self): # delets img file after sending
         img_str = f'C:\\Users\\paybl\\Documents\\python\\GitHub\\Team-Generator\\{self.msg.id}.png'
         os.remove(img_str)
 
 
-    # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams )
+    # update embeds (emb: the current embed, mode: add / rem - added / removed a player : gen - generate teams : vote - vote embed : error/verror - error displayed inside embed : endscreen - delet msg and send img )
     async def update_embed(self, mode, player=None, errorstr=''):
         if mode == 'add' or 'rem':
             playerstr = ''
@@ -163,16 +163,7 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
-        if mode == 'error':
-            emb = discord.Embed(title='', description='**__Generate Random Teams__**\n```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
-            emb.add_field(name='Butons:', value='```✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate```')
-            emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
-            emb.add_field(name=f'error @{player.name} ', value=errorstr)
-            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
-            emb.set_footer(text=f'created by {self.author.name}')
-            emb.set_thumbnail(url=self.author.avatar_url)
-            await self.msg.edit(embed=emb)
-        if mode == 'vote' or 'verror':
+        if mode == 'vote' or 'verror': # if mode 'vote' or 'error' converts the vote str
             mirage_str = await self.convert_vote(self.maps['mirage'])
             train_str = await self.convert_vote(self.maps['train'])
             inferno_str = await self.convert_vote(self.maps['inferno'])
@@ -201,6 +192,15 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
+        if mode == 'error':
+            emb = discord.Embed(title='', description='**__Generate Random Teams__**\n```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
+            emb.add_field(name='Butons:', value='```✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate```')
+            emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
+            emb.add_field(name=f'error @{player.name} ', value=errorstr)
+            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
+            emb.set_footer(text=f'created by {self.author.name}')
+            emb.set_thumbnail(url=self.author.avatar_url)
+            await self.msg.edit(embed=emb)
         if mode == 'verror':
             votestr = ''
             for player in self.already_voted:
@@ -220,17 +220,6 @@ class TeamGenerator:
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
-        if mode == 'rand': # random Map #
-            maps = ['Mirage', 'Train', 'Inferno', 'Nuke', 'Dust2', 'Vertigo', 'Cache', 'Overpass', 'Ancient']
-            rand = random.choice(maps)
-            emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
-            emb.add_field(name='Buttons:', value='🚀 🢂 generate Teams again```\n```🎤 🢂 move players in voice channel```\n```↩️ 🢂 add more players```')
-            emb.add_field(name='Teams + Map:', value=f'``` Team 1: {self.team1_str}```\n``` Team 2: {self.team2_str}```', inline=False)
-            emb.add_field(name=f'Map: {rand}', value='Have Fun and Good Luck :wink:')
-            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
-            emb.set_footer(text=f'created by {self.author.name}')
-            emb.set_thumbnail(url=self.author.avatar_url)
-            await self.msg.edit(embed=emb)
         if mode == 'endscreen':
             file = discord.File(f'{self.msg.id}.png')
             emb = discord.Embed(title='', description='', color=discord.Color.gold())
@@ -241,7 +230,7 @@ class TeamGenerator:
             await channel.send(embed=emb, file=file, delete_after=200)
             await self.del_img()
 
-    async def get_end_screen_data(self):
+    async def get_end_screen_data(self): # returns lan <--- len of the teams
         team1 = []
         team2 = []
         if len(self.players) == 2:
@@ -322,7 +311,7 @@ class TeamGenerator:
                 self.team2.append(player.name)
             await self.draw_end_screen(lan)
 
-    async def get_endscreen_img(self, map):
+    async def get_endscreen_img(self, map): # takes the right img from csgo map
         if map == 'mirage':
             self.img = cv.imread(r'maps\mirage_endscreen.png', 1)
             await self.get_end_screen_data()
@@ -351,7 +340,7 @@ class TeamGenerator:
             self.img = cv.imread(r'maps\ancient_endscreen.png', 1)
             await self.get_end_screen_data()
 
-    async def draw_end_screen(self, lan):
+    async def draw_end_screen(self, lan): # put text on the img
         pos1 = (40,300)
         pos2 = (40,350)
         pos3 = (40,400)
