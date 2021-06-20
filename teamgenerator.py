@@ -1,5 +1,5 @@
-import random
 import discord
+import random
 import random
 import cv2 as cv                # import OpenCV
 import os
