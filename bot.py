@@ -7,10 +7,10 @@ from teamgenerator import *         # import teamgenerator class
 
 
 # set intents
-intents = discord.Intents.all()
+intents = discord.Intents.default()
 
 # create bot
-bot = commands.Bot(command_prefix='.', description='Random Team Generator')
+bot = commands.Bot(command_prefix = commands.when_mentioned_or('.'), description='Random Team Generator')
 
 def debug(msg):
     if DEBUG:
