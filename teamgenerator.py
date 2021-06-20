@@ -140,10 +140,10 @@ class TeamGenerator:
             playerstr = ''
             for player in self.players:
                 playerstr += player.name + ', '
-            emb = discord.Embed(title='', description='**__Generate Random Teams__**\n```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
+            emb = discord.Embed(title='', description='```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
             emb.add_field(name='Buttons:', value='```✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate```')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
-            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
+            emb.set_author(name='TeamGenerator', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
@@ -154,10 +154,10 @@ class TeamGenerator:
                 self.team1_str += player.name + ', '
             for player in self.teams[1]:
                 self.team2_str += player.name + ', '
-            emb = discord.Embed(title='', description='**__Generate Random Teams__**\nreact with ⛔ to close  the TeamGenerator', color=discord.Color.random())
+            emb = discord.Embed(title='', description='react with ⛔ to close  the TeamGenerator', color=discord.Color.random())
             emb.add_field(name='Buttons:', value='```🚀 🢂 generate Teams again\n\n🎙️ 🢂 move players in voice channel\n\n↩️ 🢂 add more players\n\n💬 🢂 Vote for Map\n\n🔀 🢂 Choose random Map```')
             emb.add_field(name='Players joined:', value=f'``` Team 1: {self.team1_str[:-2]}```\n``` Team 2: {self.team2_str[:-2]}```', inline=False)
-            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
+            emb.set_author(name='Teams', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
@@ -175,7 +175,7 @@ class TeamGenerator:
             votestr = ''
             for player in self.already_voted:
                 votestr += player.name + ', '
-            emb = discord.Embed(title='', description='**__Vote for Map__**\n```react with ⛔ to close  the TeamGenerator\n\nreact with 🛑 to cancle the voting and go back!```', color=discord.Color.random())
+            emb = discord.Embed(title='', description='```react with ⛔ to close  the TeamGenerator\n\nreact with 🛑 to cancle the voting and go back!```', color=discord.Color.random())
             emb.add_field(name='🌴 🢂 mirage', value=mirage_str)
             emb.add_field(name='🚉 🢂 Train', value=train_str)
             emb.add_field(name='🔥 🢂 Inferno', value=inferno_str)
@@ -186,16 +186,16 @@ class TeamGenerator:
             emb.add_field(name='🌉 🢂 Overpass', value=overpass_str)
             emb.add_field(name='🐦 🢂 Ancient', value=ancient_str)
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
-            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
+            emb.set_author(name='Map voting', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
         if mode == 'error':
-            emb = discord.Embed(title='', description='**__Generate Random Teams__**\n```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
+            emb = discord.Embed(title='', description='```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
             emb.add_field(name='Butons:', value='```✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate```')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
             emb.add_field(name=f'error @{player.name} ', value=errorstr)
-            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
+            emb.set_author(name='TeamGenerator', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=self.author.avatar_url)
             await self.msg.edit(embed=emb)
@@ -203,7 +203,7 @@ class TeamGenerator:
             votestr = ''
             for player in self.already_voted:
                 votestr += player.name + ', '
-            emb = discord.Embed(title='', description='**__Vote for Map__**\n```react with ⛔ to close  the TeamGenerator\n\nreact with 🛑 to cancle the voting and go back!```', color=discord.Color.random())
+            emb = discord.Embed(title='', description='```react with ⛔ to close  the TeamGenerator\n\nreact with 🛑 to cancle the voting and go back!```', color=discord.Color.random())
             emb.add_field(name='🌴 🢂 mirage', value=mirage_str)
             emb.add_field(name='🚉 🢂 Train', value=train_str)
             emb.add_field(name='🔥 🢂 Inferno', value=inferno_str)
@@ -214,14 +214,14 @@ class TeamGenerator:
             emb.add_field(name='🌉 🢂 Overpass', value=overpass_str)
             emb.add_field(name='🐦 🢂 Ancient', value=ancient_str)
             emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
-            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
+            emb.set_author(name='Map voting', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
             await self.msg.edit(embed=emb)
         if mode == 'endscreen':
             file = discord.File(f'{self.msg.id}.png')
             emb = discord.Embed(title='', description='', color=discord.Color.gold())
-            emb.set_author(name=self.bot.user.name, icon_url=str(self.bot.user.avatar_url))
+            emb.set_author(name='Good Luck and Have Fun!', icon_url=str(self.bot.user.avatar_url))
             emb.set_image(url=f'attachment://{self.msg.id}.png')
             channel = self.msg.channel
             await self.msg.delete()
