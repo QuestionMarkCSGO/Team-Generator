@@ -192,10 +192,10 @@ async def clear_error(ctx, error):
         print('Clear error triggerd: ' + str(error))
     if isinstance(error, commands.MissingAnyRole):
         print('clear: missing role')
-        return await ctx.send("```❌You don't have the permission!```")
+        return await ctx.send("```❌You don't have the permission!```", delete_after=10)
     elif isinstance(error, commands.MissingPermissions):
         print('clear: missing permission')
-        return await ctx.send("```❌You don't have the permission!```")
+        return await ctx.send("```❌You don't have the permission!```", delete_after=10)
 
 
 @bot.command()

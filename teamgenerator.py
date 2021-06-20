@@ -82,7 +82,7 @@ class TeamGenerator:
                     self.maps['dust2'] += 1
                 elif map == 'vertigo':
                     self.maps['vertigo'] += 1
-                elif map == 'chache':
+                elif map == 'cache':
                     self.maps['cache'] += 1
                 elif map == 'overpass':
                     self.maps['overpass'] += 1
@@ -93,7 +93,7 @@ class TeamGenerator:
                     return
                 await self.update_embed('vote', player)
                 if len(self.players) == len(self.already_voted):
-                    top_map = max(self.maps, key=lambda key: self.maps[key])
+                    top_map = max(self.maps, key=lambda key: self.maps[key]) # takes the maps with most votes and if votes are the same, choose random map
                     top_map_list = []
                     for map in self.maps:
                         if self.maps[map] == self.maps[top_map]:
@@ -103,8 +103,6 @@ class TeamGenerator:
                     top_map = random.choice(top_map_list)
                     print(f'map: {top_map}')
                     await self.get_endscreen_img(top_map)
-
-
 
 
     async def convert_vote(self, votes): # converts votes int in 'bar string'
@@ -132,7 +130,7 @@ class TeamGenerator:
             return '|▉▉▉▉▉▉▉▉▉▉'
 
     async def del_img(self): # delets img file after sending
-        img_str = f'C:\\Users\\paybl\\Documents\\python\\GitHub\\Team-Generator\\{self.msg.id}.png'
+        img_str = f'{self.msg.id}.png'
         os.remove(img_str)
 
 
