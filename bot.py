@@ -1,4 +1,5 @@
 import os                           # import os
+import asyncio                      # import asyncio
 import discord                      # import discord
 from discord import Embed
 from discord.ext import commands    # import discord commands
@@ -232,8 +233,17 @@ async def mapvote(ctx):
     e.add_field(nem='Mirage', value='---')
 
 @bot.command()
-async def emb(ctx):
-    await tg.gen_end_screen('Smokr, iwanowi', 'pablit0, Ralf Rüdiger')
+async def emb(ctx, time: int):
+    emb = discord.Embed(title='Test Timer', description=f'timer: {time}')
+    msg = await ctx.send(embed=emb)
+    while time != 0:
+        time -= 1
+        emb = discord.Embed(title='Test Timer', description=f'timer: {time}')
+        await msg.edit(embed=emb)
+        await asyncio.sleep(1)
+    emb = discord.Embed(title='Test Timer', description=f'ENDE!')
+    await msg.edit(embed=emb)
+
 # get the token
 from get_token import *
 
