@@ -20,9 +20,8 @@ def debug(msg):
 ##############################
 #    Global Variables
 ##############################
-tg_list = []
-pl_list = []
 
+tg_list = []
 
 ##############################
 #    Events
@@ -173,29 +172,6 @@ async def on_reaction_add(reaction, user):
                     else:
                         await reaction.remove(user)
                         await tg.update_embed('verror', user, errorstr='*only the creator can cancle the voting and go back!*')
-        id_dict_pl = {}
-        for pl in pl_list:
-            id_dict_pl[pl] = pl.msg.id
-        for pl in id_dict_pl:
-            if pl.msg.id == reaction.message.id:
-                if str(reaction.emoji) == '💬':
-                    if pl.author == user:
-                        lan = len(pl.item_list)
-                        await pl.update_embed('vote', lan=lan,)
-                    else:
-                        await pl.update_embed('error',user=user)
-                if str(reaction.emoji) == '✴️':
-                    pass
-                if str(reaction.emoji) == '🔀':
-                    pass
-                if str(reaction.emoji) == '⛔':
-                    pass
-                if str(reaction.emoji) == '🛑':
-                    pass
-
-
-
-
 
 ##############################
 #    Commands
@@ -249,42 +225,7 @@ async def teams(ctx):
     tg = TeamGenerator(bot, msg, author)
     tg_list.append(tg)
 
-@bot.command()
-async def mapvote(ctx):
-    e = discord.Embed(title='', description='vote for maps')
-    e.add_field(nem='Mirage', value='---')
 
-@bot.command()
-async def timer(ctx, time: int):
-    emb = discord.Embed(title='Test Timer', description=f'timer: {time}')
-    msg = await ctx.send(embed=emb)
-    while time != 0:
-        time -= 1
-        emb = discord.Embed(title='Test Timer', description=f'timer: {time}')
-        await msg.edit(embed=emb)
-        await asyncio.sleep(1)
-    emb = discord.Embed(title='Test Timer', description=f'ENDE!')
-    await msg.edit(embed=emb)
-
-@bot.command()
-async def pool(ctx, name='', time=None, *, items=''):
-    if name == '' and items == '' and time == None:
-        emb = discord.Embed(title='Pool command', color=discord.Color.random())
-        emb.add_field(name='usage:', value='**.pool "name" "time" item1, item2, item3, item4, ... not more than 10 items!**\n\n***choose a mode with reaction on the message.***')
-        emb.add_field(name='Buttons:', value='💬: voting\n\n✳️: random pic\n\n🔀: shuffel as list')
-        await ctx.send(embed=emb)
-    else:
-        author = ctx.author
-        emb = discord.Embed(title=name, color=discord.Color.random())
-        emb.add_field(name='Buttons:', value='💬: voting\n\n✳️: random pic\n\n🔀: shuffel as list')
-        emb.add_field(name='Your pool Items:', value=items, inline=False)
-        msg = await ctx.send(embed=emb)
-        await msg.add_reaction('💬')
-        await msg.add_reaction('✳️')
-        await msg.add_reaction('🔀')
-        pl = Pool(bot, msg, author)
-        pl_list.append(pl)
-        pl.items = items.split(',')
 
 # get the token
 from get_token import *
