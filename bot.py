@@ -11,7 +11,7 @@ from pool import *                  # import pool Class
 intents = discord.Intents.default()
 
 # create bot
-bot = commands.Bot(command_prefix = commands.when_mentioned_or('.'), description='Random Team Generator')
+bot = commands.Bot(command_prefix = commands.when_mentioned_or('!'), description='Random Team Generator')
 
 def debug(msg):
     if DEBUG:
