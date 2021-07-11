@@ -154,6 +154,7 @@ async def on_reaction_add(reaction, user):
                         await tg.msg.clear_reaction('❌')
                         await tg.msg.clear_reaction('✅')
                         await tg.msg.add_reaction('🔀')
+                        await tg.msg.add_reaction('🚀')
                         tg.already_voted = []
                         tg.mirage = 0
                         tg.train = 0
