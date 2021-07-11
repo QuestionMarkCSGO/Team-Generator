@@ -311,7 +311,7 @@ class TeamGenerator:
 
     async def get_endscreen_img(self, map): # takes the right img from csgo map
 
-        path = os.join('maps', f'{map}_endscreen.png')
+        path = os.path.join('maps', f'{map}_endscreen.png')
         self.img = cv.imread(path, 1)
 
         # if map == 'mirage':
