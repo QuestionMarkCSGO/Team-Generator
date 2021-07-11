@@ -162,7 +162,7 @@ async def on_reaction_add(reaction, user):
                         tg.nuke = 0
                         tg.dust2 = 0
                         tg.vertigo = 0
-                        tg.cache
+                        tg.cache = 0
                         tg.overpass = 0
                         tg.ancient = 0
                     else:
