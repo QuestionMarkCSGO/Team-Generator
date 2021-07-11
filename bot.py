@@ -228,7 +228,7 @@ async def teams(ctx):
 
 
 # get the token
-from get_token import *
+token= os.environ["TOKEN"]
 
 # run the bot
-bot.run(tg_token)
+bot.run(token)
