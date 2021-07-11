@@ -7,8 +7,6 @@ from config import *                # import config
 from teamgenerator import *         # import teamgenerator class
 
 
-# set intents
-intents = discord.Intents.default()
 
 # create bot
 bot = commands.Bot(command_prefix = commands.when_mentioned_or('!'), description='Random Team Generator')
