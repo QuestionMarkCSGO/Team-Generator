@@ -5,7 +5,7 @@ from discord import Embed
 from discord.ext import commands    # import discord commands
 from config import *                # import config
 from teamgenerator import *         # import teamgenerator class
-from pool import *                  # import pool Class
+
 
 # set intents
 intents = discord.Intents.default()
