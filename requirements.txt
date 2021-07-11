@@ -102,4 +102,3 @@ yarl==1.6.3
 youtube-dl==2021.5.16
 zope.event==4.5.0
 zope.interface==5.4.0
-opencv-python-headless==4.2.0.32
