@@ -137,7 +137,7 @@ class TeamGenerator:
             for player in self.players:
                 playerstr += player.name + ', '
             emb = discord.Embed(title='', description='```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
-            emb.add_field(name='Buttons:', value='```✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate```')
+            emb.add_field(name='Buttons:', value='✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
             emb.set_author(name='TeamGenerator', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
@@ -151,7 +151,7 @@ class TeamGenerator:
             for player in self.teams[1]:
                 self.team2_str += player.name + ', '
             emb = discord.Embed(title='', description='react with ⛔ to close  the TeamGenerator', color=discord.Color.random())
-            emb.add_field(name='Buttons:', value='```🚀 🢂 generate Teams again\n\n🎙️ 🢂 move players in voice channel\n\n↩️ 🢂 add more players\n\n💬 🢂 Vote for Map\n\n🔀 🢂 Choose random Map```')
+            emb.add_field(name='Buttons:', value='🚀 🢂 generate Teams again\n\n🎙️ 🢂 move players in voice channel\n\n↩️ 🢂 add more players\n\n💬 🢂 Vote for Map\n\n🔀 🢂 Choose random Map')
             emb.add_field(name='Players joined:', value=f'``` Team 1: {self.team1_str[:-2]}```\n``` Team 2: {self.team2_str[:-2]}```', inline=False)
             emb.set_author(name='Teams', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
