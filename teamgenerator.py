@@ -68,7 +68,6 @@ class TeamGenerator:
             if player in self.already_voted:
                 return
             else:
-                print(f'{player.name} voted for {map}')
                 self.already_voted.append(player)
                 if map == 'mirage':
                     self.maps['mirage'] += 1
@@ -98,10 +97,7 @@ class TeamGenerator:
                     for map in self.maps:
                         if self.maps[map] == self.maps[top_map]:
                             top_map_list.append(map)
-                            print(map)
-                    print(top_map_list)
                     top_map = random.choice(top_map_list)
-                    print(f'map: {top_map}')
                     await self.get_endscreen_img(top_map)
 
 
@@ -310,9 +306,9 @@ class TeamGenerator:
             await self.draw_end_screen(lan)
 
     async def get_endscreen_img(self, map): # takes the right img from csgo map
-
         path = os.path.join('maps', f'{map}_endscreen.png')
         self.img = cv.imread(path, 1)
+        await self.get_end_screen_data()
 
         # if map == 'mirage':
         #     self.img = cv.imread(r'maps\mirage_endscreen.png', 1)
