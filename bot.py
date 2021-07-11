@@ -200,8 +200,8 @@ async def teams(ctx):
     await ctx.message.delete()
     # create embed
 
-    emb = discord.Embed(title='', description='```react with ⛔ to close  the TeamGenerator```', color=discord.Color.red())
-    emb.add_field(name='__Buttons:__', value='```✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate```')
+    emb = discord.Embed(title='', description='react with ⛔ to close  the TeamGenerator', color=discord.Color.red())
+    emb.add_field(name='__Buttons:__', value='✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate')
     emb.add_field(name='__Players joined:__', value='```      ```', inline=False)
     emb.set_author(name='TeamGenerator', icon_url=str(bot.user.avatar_url))
 
