@@ -136,7 +136,7 @@ class TeamGenerator:
             playerstr = ''
             for player in self.players:
                 playerstr += player.name + ', '
-            emb = discord.Embed(title='', description='```react with ⛔ to close  the TeamGenerator```', color=discord.Color.random())
+            emb = discord.Embed(title='', description='react with ⛔ to close  the TeamGenerator', color=discord.Color.random())
             emb.add_field(name='Buttons:', value='✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate')
             emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
             emb.set_author(name='TeamGenerator', icon_url=str(self.bot.user.avatar_url))
