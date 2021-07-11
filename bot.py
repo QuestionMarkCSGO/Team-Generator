@@ -67,7 +67,6 @@ async def on_reaction_add(reaction, user):
                     else:
                         await tg.gen_teams(user)
                         await tg.msg.add_reaction('↩️')
-                        await tg.msg.add_reaction('🎙️')
                         await tg.msg.add_reaction('💬')
                         await tg.msg.clear_reaction('❌')
                         await tg.msg.clear_reaction('✅')
