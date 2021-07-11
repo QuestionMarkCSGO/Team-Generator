@@ -47,7 +47,6 @@ async def on_guild_join(guild):
 @bot.event
 async def on_reaction_add(reaction, user):
     if user != bot.user:
-        debug('Reaction add triggerd from ' + user.name)
         id_dict = {}
         for tg in tg_list:
             id_dict[tg] = tg.msg.id
@@ -180,7 +179,6 @@ async def on_reaction_add(reaction, user):
 @bot.command()
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount=00):
-    debug(f'clearing {ctx.channel}')
     if amount == 0:
         await ctx.channel.purge()
     else:
@@ -199,7 +197,6 @@ async def clear_error(ctx, error):
 
 @bot.command()
 async def teams(ctx):
-    debug('Teams command triggerd')
     await ctx.message.delete()
     # create embed
 
