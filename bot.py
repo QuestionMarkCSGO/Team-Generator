@@ -83,14 +83,6 @@ async def on_reaction_add(reaction, user):
                     else:
                         await reaction.remove(user)
                         await tg.update_embed('error', user, errorstr='*only the creator can close the TeamGenerator!*')
-                if str(reaction.emoji) == '🎙️':
-                    await reaction.remove(user)
-                    await guild.create_category(name='TeamGenerator')
-                    voice1 = await tg.author.guild.create_voice_channel(name='tgTeam 1',category='TeamGenerator')
-                    voice2 = await tg.author.guild.create_voice_channel(name='tgTeam 2',category='TeamGenerator')
-                    channel1 = await tg.author.guild.get_channel(voice1.id)
-                    print(f'channel ID = {voice1}')
-                    await move_to(channel1)
                 if str(reaction.emoji) == '↩️':
                     await tg.add_player(user)
                     await tg.msg.clear_reactions()

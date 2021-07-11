@@ -35,10 +35,8 @@ class TeamGenerator:
     async def add_player(self, player):
         if player in self.players:
             await self.update_embed('add', player)
-            print(f'{player.name} already in player list!')
         else:
             self.players.append(player)
-            print(f'added {player.name}!')
             await self.update_embed('add', player)
 
     # remove player from list
