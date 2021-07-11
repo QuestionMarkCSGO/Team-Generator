@@ -310,33 +310,37 @@ class TeamGenerator:
             await self.draw_end_screen(lan)
 
     async def get_endscreen_img(self, map): # takes the right img from csgo map
-        if map == 'mirage':
-            self.img = cv.imread(r'.\maps\mirage_endscreen.png', 1)
-            await self.get_end_screen_data()
-        elif map == 'train':
-            self.img = cv.imread(r'maps\train_endscreen.png', 1)
-            await self.get_end_screen_data()
-        elif map == 'inferno':
-            self.img = cv.imread(r'maps\inferno_endscreen.png', 1)
-            await self.get_end_screen_data()
-        elif map == 'nuke':
-            self.img = cv.imread(r'maps\nuke_endscreen.png', 1)
-            await self.get_end_screen_data()
-        elif map == 'dust2':
-            self.img = cv.imread(r'maps\dust2_endscreen.png', 1)
-            await self.get_end_screen_data()
-        elif map == 'vertigo':
-            self.img = cv.imread(r'maps\vertigo_endscreen.png', 1)
-            await self.get_end_screen_data()
-        elif map == 'chache':
-            self.img = cv.imread(r'maps\cache_endscreen.png', 1)
-            await self.get_end_screen_data()
-        elif map == 'overpass':
-            self.img = cv.imread(r'maps\overpass_endscreen.png', 1)
-            await self.get_end_screen_data()
-        elif map == 'ancient':
-            self.img = cv.imread(r'maps\ancient_endscreen.png', 1)
-            await self.get_end_screen_data()
+
+        path = os.join('maps', f'{map}_endscreen.png')
+        self.img = cv.imread(path, 1)
+
+        # if map == 'mirage':
+        #     self.img = cv.imread(r'maps\mirage_endscreen.png', 1)
+        #     await self.get_end_screen_data()
+        # elif map == 'train':
+        #     self.img = cv.imread(r'maps\train_endscreen.png', 1)
+        #     await self.get_end_screen_data()
+        # elif map == 'inferno':
+        #     self.img = cv.imread(r'maps\inferno_endscreen.png', 1)
+        #     await self.get_end_screen_data()
+        # elif map == 'nuke':
+        #     self.img = cv.imread(r'maps\nuke_endscreen.png', 1)
+        #     await self.get_end_screen_data()
+        # elif map == 'dust2':
+        #     self.img = cv.imread(r'maps\dust2_endscreen.png', 1)
+        #     await self.get_end_screen_data()
+        # elif map == 'vertigo':
+        #     self.img = cv.imread(r'maps\vertigo_endscreen.png', 1)
+        #     await self.get_end_screen_data()
+        # elif map == 'chache':
+        #     self.img = cv.imread(r'maps\cache_endscreen.png', 1)
+        #     await self.get_end_screen_data()
+        # elif map == 'overpass':
+        #     self.img = cv.imread(r'maps\overpass_endscreen.png', 1)
+        #     await self.get_end_screen_data()
+        # elif map == 'ancient':
+        #     self.img = cv.imread(r'maps\ancient_endscreen.png', 1)
+        #     await self.get_end_screen_data()
 
     async def draw_end_screen(self, lan): # put text on the img
         pos1 = (40,300)
