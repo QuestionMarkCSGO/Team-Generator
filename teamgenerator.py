@@ -171,7 +171,7 @@ class TeamGenerator:
             votestr = ''
             for player in self.already_voted:
                 votestr += player.name + ', '
-            emb = discord.Embed(title='', description='```react with ⛔ to close  the TeamGenerator\n\nreact with 🛑 to cancle the voting and go back!```', color=discord.Color.random())
+            emb = discord.Embed(title='', description='react with ⛔ to close  the TeamGenerator\n\nreact with 🛑 to cancle the voting and go back!', color=discord.Color.random())
             emb.add_field(name='🌴 🢂 mirage', value=mirage_str)
             emb.add_field(name='🚉 🢂 Train', value=train_str)
             emb.add_field(name='🔥 🢂 Inferno', value=inferno_str)
