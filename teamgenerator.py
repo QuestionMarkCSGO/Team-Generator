@@ -1,6 +1,5 @@
 import discord
 import random
-import random
 import cv2 as cv                # import OpenCV
 import os
 import operator
@@ -308,33 +307,33 @@ class TeamGenerator:
         self.img = cv.imread(path, 1)
         await self.get_end_screen_data()
 
-        # if map == 'mirage':
-        #     self.img = cv.imread(r'maps\mirage_endscreen.png', 1)
-        #     await self.get_end_screen_data()
-        # elif map == 'train':
-        #     self.img = cv.imread(r'maps\train_endscreen.png', 1)
-        #     await self.get_end_screen_data()
-        # elif map == 'inferno':
-        #     self.img = cv.imread(r'maps\inferno_endscreen.png', 1)
-        #     await self.get_end_screen_data()
-        # elif map == 'nuke':
-        #     self.img = cv.imread(r'maps\nuke_endscreen.png', 1)
-        #     await self.get_end_screen_data()
-        # elif map == 'dust2':
-        #     self.img = cv.imread(r'maps\dust2_endscreen.png', 1)
-        #     await self.get_end_screen_data()
-        # elif map == 'vertigo':
-        #     self.img = cv.imread(r'maps\vertigo_endscreen.png', 1)
-        #     await self.get_end_screen_data()
-        # elif map == 'chache':
-        #     self.img = cv.imread(r'maps\cache_endscreen.png', 1)
-        #     await self.get_end_screen_data()
-        # elif map == 'overpass':
-        #     self.img = cv.imread(r'maps\overpass_endscreen.png', 1)
-        #     await self.get_end_screen_data()
-        # elif map == 'ancient':
-        #     self.img = cv.imread(r'maps\ancient_endscreen.png', 1)
-        #     await self.get_end_screen_data()
+        if map == 'mirage':
+            self.img = cv.imread(r'maps\mirage_endscreen.png', 1)
+            await self.get_end_screen_data()
+        elif map == 'train':
+            self.img = cv.imread(r'maps\train_endscreen.png', 1)
+            await self.get_end_screen_data()
+        elif map == 'inferno':
+            self.img = cv.imread(r'maps\inferno_endscreen.png', 1)
+            await self.get_end_screen_data()
+        elif map == 'nuke':
+            self.img = cv.imread(r'maps\nuke_endscreen.png', 1)
+            await self.get_end_screen_data()
+        elif map == 'dust2':
+            self.img = cv.imread(r'maps\dust2_endscreen.png', 1)
+            await self.get_end_screen_data()
+        elif map == 'vertigo':
+            self.img = cv.imread(r'maps\vertigo_endscreen.png', 1)
+            await self.get_end_screen_data()
+        elif map == 'chache':
+            self.img = cv.imread(r'maps\cache_endscreen.png', 1)
+            await self.get_end_screen_data()
+        elif map == 'overpass':
+            self.img = cv.imread(r'maps\overpass_endscreen.png', 1)
+            await self.get_end_screen_data()
+        elif map == 'ancient':
+            self.img = cv.imread(r'maps\ancient_endscreen.png', 1)
+            await self.get_end_screen_data()
 
     async def draw_end_screen(self, lan): # put text on the img
         pos1 = (40,300)
@@ -353,8 +352,6 @@ class TeamGenerator:
             cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
             cv.putText(self.img, f'{self.team2[0]}', pos7, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)
             cv.imwrite(f'{self.msg.id}.png', self.img)
-            print(f'{self.msg.id}.png')
-
         if lan == 3:
             if len(self.team1) == 2:
                 cv.putText(self.img, f'{self.team1[0]}', pos1, cv.FONT_HERSHEY_DUPLEX, 1.0, (224,224,224), 1)

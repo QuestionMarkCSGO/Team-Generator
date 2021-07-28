@@ -164,26 +164,6 @@ async def on_reaction_add(reaction, user):
 ##############################
 #    Commands
 ##############################
-
-@bot.command()
-@commands.has_permissions(manage_messages=True)
-async def clear(ctx, amount=00):
-    if amount == 0:
-        await ctx.channel.purge()
-    else:
-        await ctx.channel.purge(limit=(int(amount + 1)))
-@clear.error
-async def clear_error(ctx, error):
-    if DEBUG:
-        print('Clear error triggerd: ' + str(error))
-    if isinstance(error, commands.MissingAnyRole):
-        print('clear: missing role')
-        return await ctx.send("```❌You don't have the permission!```", delete_after=10)
-    elif isinstance(error, commands.MissingPermissions):
-        print('clear: missing permission')
-        return await ctx.send("```❌You don't have the permission!```", delete_after=10)
-
-
 @bot.command()
 async def teams(ctx):
     await ctx.message.delete()
