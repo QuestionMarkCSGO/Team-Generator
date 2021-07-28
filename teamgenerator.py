@@ -11,6 +11,7 @@ class TeamGenerator:
         self.msg = msg          # message id for TeamGenerator embed
         self.author = author    # creator of TeamGenerator (user who wrote the command) to determine who can close the TeamGenerator
         self.players = []       # list of players joined TeamGenerator
+        self.player_count = 0
         self.teams = [[], []]
         self.team1_str = ''
         self.team2_str = ''
@@ -135,7 +136,7 @@ class TeamGenerator:
                 playerstr += player.name + ', '
             emb = discord.Embed(title='', description='react with ⛔ to close  the TeamGenerator', color=discord.Color.random())
             emb.add_field(name='Buttons:', value='✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate')
-            emb.add_field(name='Players joined:', value=f'``` {playerstr[:-2]} ```', inline=False)
+            emb.add_field(name='Players joined:', value=f'{len(self.playerstr)} ``` {playerstr[:-2]} ```', inline=False)
             emb.set_author(name='TeamGenerator', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
@@ -178,7 +179,7 @@ class TeamGenerator:
             emb.add_field(name='🏭 🢂 Cache', value=cache_str)
             emb.add_field(name='🌉 🢂 Overpass', value=overpass_str)
             emb.add_field(name='🐦 🢂 Ancient', value=ancient_str)
-            emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
+            emb.add_field(name='Players voted:', value=f'{len(self.votestr)} ``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name='Map voting', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)
@@ -206,7 +207,7 @@ class TeamGenerator:
             emb.add_field(name='🏭 🢂 Cache', value=cache_str)
             emb.add_field(name='🌉 🢂 Overpass', value=overpass_str)
             emb.add_field(name='🐦 🢂 Ancient', value=ancient_str)
-            emb.add_field(name='Players voted:', value=f'``` {votestr[:-2]} ```', inline=False)
+            emb.add_field(name='Players voted:', value=f'{len(self.voterstr)} ``` {votestr[:-2]} ```', inline=False)
             emb.set_author(name='Map voting', icon_url=str(self.bot.user.avatar_url))
             emb.set_footer(text=f'created by {self.author.name}')
             emb.set_thumbnail(url=player.avatar_url)

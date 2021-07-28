@@ -51,6 +51,7 @@ async def on_reaction_add(reaction, user):
         for tg in id_dict:
             if tg.msg.id == reaction.message.id:
                 if str(reaction.emoji) == '✅':
+                    tg.player_count += 1
                     await reaction.remove(user)
                     await tg.add_player(user)
                 if str(reaction.emoji) == '❌':
@@ -162,7 +163,7 @@ async def on_reaction_add(reaction, user):
                         await tg.update_embed('verror', user, errorstr='*only the creator can cancle the voting and go back!*')
 
 ##############################
-#    Commands
+#    Commands                #
 ##############################
 @bot.command()
 async def teams(ctx):
@@ -171,7 +172,7 @@ async def teams(ctx):
 
     emb = discord.Embed(title='', description='react with ⛔ to close  the TeamGenerator', color=discord.Color.red())
     emb.add_field(name='__Buttons:__', value='✅ 🢂 join\n\n❌ 🢂 leave\n\n🚀 🢂 generate')
-    emb.add_field(name='__Players joined:__', value='```      ```', inline=False)
+    emb.add_field(name='__players joined:__', value='0 ```      ```', inline=False)
     emb.set_author(name='TeamGenerator', icon_url=str(bot.user.avatar_url))
 
     emb.set_footer(text=f'created by {ctx.author.name}')
